@@ -1,4 +1,4 @@
-package fireprevention;
+package barricades;
 
 import java.awt.Point;
 import java.awt.Color;
