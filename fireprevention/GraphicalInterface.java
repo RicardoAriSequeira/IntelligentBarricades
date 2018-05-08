@@ -50,15 +50,145 @@ public class GraphicalInterface extends JFrame {
 
 	public void displayBoard(Board board) {
 		for(int i=0; i<board.nX; i++){
-			for(int j=0; j<board.nY; j++){
-				double value = board.board[i][j];
-				int R = (int) (255*value)/5;
-				int G = (int) (255*(5-value))/5; 
+			for(int j=0; j<board.nY; j++){ 
 				JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+j));
-				p.setBackground(new Color(R,G,0));
+				p.setBackground(new Color(0,0,0));
 				p.setBorder(BorderFactory.createLineBorder(Color.white));
 			}
 		}
+	for(int i=0; i<17; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+3));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=0; i<32; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+8));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=0; i<32; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+9));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=0; i<32; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+22));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=0; i<32; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+23));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=0; i<17; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+13));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=0; i<21; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+18));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=0; i<17; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+28));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=0; i<32; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(3*board.nY+i));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=0; i<32; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(16*board.nY+i));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=0; i<32; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(17*board.nY+i));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=0; i<32; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(21*board.nY+i));
+		p.setBackground(new Color(255,255,255));
+	}		
+	for(int i=0; i<32; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(25*board.nY+i));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=0; i<32; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(29*board.nY+i));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=0; i<4; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(10*board.nY+i));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=4; i<10; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(7*board.nY+i));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=4; i<10; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(12*board.nY+i));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=10; i<14; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(10*board.nY+i));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=14; i<18; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(8*board.nY+i));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=14; i<18; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(13*board.nY+i));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=19; i<22; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(10*board.nY+i));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=23; i<29; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(12*board.nY+i));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=29; i<32; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(10*board.nY+i));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=18; i<32; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+5));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=18; i<22; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+2));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=29; i<32; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+2));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=26; i<29; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+18));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=29; i<32; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+13));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=22; i<26; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+13));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=18; i<26; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+29));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=29; i<32; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+29));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=29; i<32; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+26));
+		p.setBackground(new Color(255,255,255));
+	}
+	for(int i=18; i<21; i++){
+		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+26));
+		p.setBackground(new Color(255,255,255));
+	}
+
 		boardPanel.invalidate();
 	}
 	

@@ -15,7 +15,7 @@ public class Agent {
 	} 
 	
 	public void go(){
-		if (position.x > 10) position.x--;
+		if(position.x>10) position.x--;
 		else position.x++;
 	}
 	

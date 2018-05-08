@@ -1,6 +1,7 @@
 package fireprevention;
 
 import java.awt.Point;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -26,21 +27,12 @@ public class Board {
 	}
 
 	private void initialize() {
-
 		UAVs = new ArrayList<Agent>();
-
-		for (int i=0; i<nUAVs && i<nY; i++)
-
-			UAVs.add(new Agent(new Point(0,i)));
-		
+		for(int i=0; i<nUAVs && i<nY; i++) UAVs.add(new Agent(new Point(0,i)));
 		Random r = new Random();
-
 		board = new double[nX][nY];
-
 		for(int i=0; i<nX; i++)
-
 			for(int j=0; j<nY; j++)
-				
 				board[i][j] = Math.abs(r.nextGaussian());
 	}
 
@@ -52,16 +44,16 @@ public class Board {
 	public class RunThread extends Thread {
 		
 		int time;
-
 		private volatile boolean running = true;
 		
 		public RunThread(int time){
 			this.time = time;
+
 		}
 
-		public void terminate() {
-	        running = false;
-	    }
+		public void terminate(){
+			running = false;
+		}
 		
 	    public void run() {
 	    	while(running){
