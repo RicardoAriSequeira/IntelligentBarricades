@@ -16,7 +16,7 @@ public class Board {
 
 	public int nX, nY, nUAVs;
 	public List<Agent> UAVs;
-	public double[][] board;
+	public Cell[][] board;
 	public GraphicalInterface GUI;
 	
 	public Board(int nX, int nY, int nUAVs) {
@@ -30,10 +30,10 @@ public class Board {
 		UAVs = new ArrayList<Agent>();
 		for(int i=0; i<nUAVs && i<nY; i++) UAVs.add(new Agent(new Point(0,i)));
 		Random r = new Random();
-		board = new double[nX][nY];
+		board = new Cell[nX][nY];
 		for(int i=0; i<nX; i++)
 			for(int j=0; j<nY; j++)
-				board[i][j] = Math.abs(r.nextGaussian());
+				board[i][j] = new Cell();
 	}
 
 	
