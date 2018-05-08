@@ -56,138 +56,147 @@ public class GraphicalInterface extends JFrame {
 				p.setBorder(BorderFactory.createLineBorder(Color.white));
 			}
 		}
-	for(int i=0; i<17; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+3));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=0; i<32; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+8));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=0; i<32; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+9));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=0; i<32; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+22));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=0; i<32; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+23));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=0; i<17; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+13));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=0; i<21; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+18));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=0; i<17; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+28));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=0; i<32; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(3*board.nY+i));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=0; i<32; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(16*board.nY+i));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=0; i<32; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(17*board.nY+i));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=0; i<32; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(21*board.nY+i));
-		p.setBackground(new Color(255,255,255));
-	}		
-	for(int i=0; i<32; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(25*board.nY+i));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=0; i<32; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(29*board.nY+i));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=0; i<4; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(10*board.nY+i));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=4; i<10; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(7*board.nY+i));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=4; i<10; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(12*board.nY+i));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=10; i<14; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(10*board.nY+i));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=14; i<18; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(8*board.nY+i));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=14; i<18; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(13*board.nY+i));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=19; i<22; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(10*board.nY+i));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=23; i<29; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(12*board.nY+i));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=29; i<32; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(10*board.nY+i));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=18; i<32; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+5));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=18; i<22; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+2));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=29; i<32; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+2));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=26; i<29; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+18));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=29; i<32; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+13));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=22; i<26; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+13));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=18; i<26; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+29));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=29; i<32; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+29));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=29; i<32; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+26));
-		p.setBackground(new Color(255,255,255));
-	}
-	for(int i=18; i<21; i++){
-		JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+26));
-		p.setBackground(new Color(255,255,255));
-	}
+		for(int i=0; i<17; i++){
+			board.board[i][3].setRoad();
+			board.board[i][3].setNorthDirection();
+		}
+		for(int i=0; i<32; i++){
+			board.board[i][8].setRoad();
+			board.board[i][8].setSouthDirection();
+		}
+		for(int i=0; i<32; i++){
+			board.board[i][9].setRoad();
+			board.board[i][9].setNorthDirection();
+		}
+		for(int i=0; i<32; i++){
+			board.board[i][22].setRoad();
+			board.board[i][22].setSouthDirection();
+		}
+		for(int i=0; i<32; i++){
+			board.board[i][23].setRoad();
+			board.board[i][23].setNorthDirection();
+		}
+		for(int i=0; i<17; i++){
+			board.board[i][13].setRoad();
+			board.board[i][13].setSouthDirection();
+		}
+		for(int i=0; i<21; i++){
+			board.board[i][18].setRoad();
+			board.board[i][18].setNorthDirection();
+		}
+		for(int i=0; i<17; i++){
+			board.board[i][28].setRoad();
+			board.board[i][28].setSouthDirection();
+		}
+		for(int i=0; i<32; i++){
+			board.board[3][i].setRoad();
+			board.board[3][i].setEastDirection();
+		}
+		for(int i=0; i<32; i++){
+			board.board[16][i].setRoad();
+			board.board[16][i].setWestDirection();
+		}
+		for(int i=0; i<32; i++){
+			board.board[17][i].setRoad();
+			board.board[17][i].setEastDirection();
+		}
+		for(int i=0; i<32; i++){
+			board.board[21][i].setRoad();
+			board.board[21][i].setEastDirection();
+		}		
+		for(int i=0; i<32; i++){
+			board.board[25][i].setRoad();
+			board.board[25][i].setWestDirection();
+		}
+		for(int i=0; i<32; i++){
+			board.board[29][i].setRoad();
+			board.board[29][i].setEastDirection();
+		}
+		for(int i=0; i<4; i++){
+			board.board[10][i].setRoad();
+			board.board[10][i].setWestDirection();
+		}
+		for(int i=4; i<10; i++){
+			board.board[7][i].setRoad();
+			board.board[7][i].setWestDirection();
+		}
+		for(int i=4; i<10; i++){
+			board.board[12][i].setRoad();
+			board.board[12][i].setEastDirection();
+		}
+		for(int i=10; i<14; i++){
+			board.board[10][i].setRoad();
+			board.board[10][i].setWestDirection();
+		}
+		for(int i=14; i<18; i++){
+			board.board[8][i].setRoad();
+			board.board[8][i].setWestDirection();
+		}
+		for(int i=14; i<18; i++){
+			board.board[13][i].setRoad();
+			board.board[13][i].setEastDirection();
+		}
+		for(int i=19; i<22; i++){
+			board.board[10][i].setRoad();
+			board.board[10][i].setWestDirection();
+		}
+		for(int i=23; i<29; i++){
+			board.board[12][i].setRoad();
+			board.board[12][i].setWestDirection();
+		}
+		for(int i=29; i<32; i++){
+			board.board[10][i].setRoad();
+			board.board[10][i].setWestDirection();
+		}
+		for(int i=18; i<32; i++){
+			board.board[i][5].setRoad();
+			board.board[i][5].setSouthDirection();
+		}
+		for(int i=18; i<22; i++){
+			board.board[i][2].setRoad();
+			board.board[i][2].setNorthDirection();
+		}
+		for(int i=29; i<32; i++){
+			board.board[i][2].setRoad();
+			board.board[i][2].setNorthDirection();
+		}
+		for(int i=26; i<29; i++){
+			board.board[i][18].setRoad();
+			board.board[i][18].setNorthDirection();
+		}
+		for(int i=29; i<32; i++){
+			board.board[i][13].setRoad();
+			board.board[i][13].setNorthDirection();
+		}
+		for(int i=22; i<26; i++){
+			board.board[i][13].setRoad();
+			board.board[i][13].setNorthDirection();
+		}
+		for(int i=18; i<26; i++){
+			board.board[i][29].setRoad();
+			board.board[i][29].setSouthDirection();
+		}
+		for(int i=29; i<32; i++){
+			board.board[i][29].setRoad();
+			board.board[i][29].setSouthDirection();
+		}
+		for(int i=29; i<32; i++){
+			board.board[i][26].setRoad();
+			board.board[i][26].setNorthDirection();
+		}
+		for(int i=18; i<21; i++){
+			board.board[i][26].setRoad();
+			board.board[i][26].setNorthDirection();
+		}
+
+		for(int i=0; i<board.nX; i++){
+			for(int j=0; j<board.nY; j++){
+				if (board.board[i][j].isRoad()){
+					JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+j));
+					p.setBackground(new Color(255,255,255));
+				}
+			}
+		}
 
 		boardPanel.invalidate();
 	}

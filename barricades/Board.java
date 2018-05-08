@@ -29,7 +29,6 @@ public class Board {
 	private void initialize() {
 		UAVs = new ArrayList<Agent>();
 		for(int i=0; i<nUAVs && i<nY; i++) UAVs.add(new Agent(new Point(0,i)));
-		Random r = new Random();
 		board = new Cell[nX][nY];
 		for(int i=0; i<nX; i++)
 			for(int j=0; j<nY; j++)
