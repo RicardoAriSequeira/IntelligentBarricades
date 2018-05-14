@@ -2,6 +2,11 @@ package barricades;
 
 public class Cell {
 
+	public static final int NORTH = 0;
+	public static final int SOUTH = 1;
+	public static final int EAST = 2;
+	public static final int WEST = 3;
+
 	private boolean isRoad;
 
 	// North, South, East, West
@@ -12,20 +17,8 @@ public class Cell {
 		directions = new boolean[4];
 	} 
 
-	public void setNorthDirection() {
-		directions[0] = true;
-	}
-
-	public void setSouthDirection() {
-		directions[1] = true;
-	}
-
-	public void setEastDirection() {
-		directions[2] = true;
-	}
-
-	public void setWestDirection() {
-		directions[3] = true;
+	public void setDirection(int direction) {
+		directions[direction] = true;
 	}
 
 	public void setRoad() {

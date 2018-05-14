@@ -12,6 +12,11 @@ import java.util.Random;
  */
 public class Board {
 
+	public static final int NORTH = 0;
+	public static final int SOUTH = 1;
+	public static final int EAST = 2;
+	public static final int WEST = 3;
+
 	/** A: Environment */
 
 	public int nX, nY, nUAVs;
@@ -40,118 +45,118 @@ public class Board {
 
 		for(int i=0; i<18; i++){
 			board[i][3].setRoad();
-			board[i][3].setNorthDirection();
+			board[i][3].setDirection(NORTH);
 
 			board[i][13].setRoad();
-			board[i][13].setSouthDirection();
+			board[i][13].setDirection(SOUTH);
 
 			board[i][28].setRoad();
-			board[i][28].setSouthDirection();
+			board[i][28].setDirection(SOUTH);
 		}
 		for(int i=0; i<32; i++){
 			board[i][8].setRoad();
-			board[i][8].setSouthDirection();
+			board[i][8].setDirection(SOUTH);
 
 			board[i][9].setRoad();
-			board[i][9].setNorthDirection();
+			board[i][9].setDirection(NORTH);
 
 			board[i][22].setRoad();
-			board[i][22].setSouthDirection();
+			board[i][22].setDirection(SOUTH);
 
 			board[i][23].setRoad();
-			board[i][23].setNorthDirection();
+			board[i][23].setDirection(NORTH);
 
 			board[3][i].setRoad();
-			board[3][i].setEastDirection();
+			board[3][i].setDirection(EAST);
 
 			board[16][i].setRoad();
-			board[16][i].setWestDirection();
+			board[16][i].setDirection(WEST);
 
 			board[17][i].setRoad();
-			board[17][i].setEastDirection();
+			board[17][i].setDirection(EAST);
 
 			board[21][i].setRoad();
-			board[21][i].setEastDirection();
+			board[21][i].setDirection(EAST);
 
 			board[25][i].setRoad();
-			board[25][i].setWestDirection();
+			board[25][i].setDirection(WEST);
 
 			board[29][i].setRoad();
-			board[29][i].setEastDirection();			
+			board[29][i].setDirection(EAST);			
 		}
 		for(int i=0; i<22; i++){
 			board[i][18].setRoad();
-			board[i][18].setNorthDirection();
+			board[i][18].setDirection(NORTH);
 		}
 		for(int i=0; i<4; i++){
 			board[10][i].setRoad();
-			board[10][i].setWestDirection();
+			board[10][i].setDirection(WEST);
 		}
 		for(int i=4; i<10; i++){
 			board[7][i].setRoad();
-			board[7][i].setWestDirection();
+			board[7][i].setDirection(WEST);
 
 			board[12][i].setRoad();
-			board[12][i].setEastDirection();
+			board[12][i].setDirection(EAST);
 		}
 		for(int i=8; i<14; i++){
 			board[10][i].setRoad();
-			board[10][i].setWestDirection();
+			board[10][i].setDirection(WEST);
 		}
 		for(int i=13; i<19; i++){
 			board[8][i].setRoad();
-			board[8][i].setWestDirection();
+			board[8][i].setDirection(WEST);
 
 			board[13][i].setRoad();
-			board[13][i].setEastDirection();
+			board[13][i].setDirection(EAST);
 		}
 		for(int i=18; i<24; i++){
 			board[10][i].setRoad();
-			board[10][i].setWestDirection();
+			board[10][i].setDirection(WEST);
 		}
 		for(int i=22; i<29; i++){
 			board[12][i].setRoad();
-			board[12][i].setWestDirection();
+			board[12][i].setDirection(WEST);
 		}
 		for(int i=28; i<32; i++){
 			board[10][i].setRoad();
-			board[10][i].setWestDirection();
+			board[10][i].setDirection(WEST);
 		}
 		for(int i=16; i<32; i++){
 			board[i][5].setRoad();
-			board[i][5].setSouthDirection();
+			board[i][5].setDirection(SOUTH);
 		}
 		for(int i=16; i<22; i++){
 			board[i][2].setRoad();
-			board[i][2].setNorthDirection();
+			board[i][2].setDirection(NORTH);
 
 			board[i][26].setRoad();
-			board[i][26].setNorthDirection();
+			board[i][26].setDirection(NORTH);
 		}
 		for(int i=29; i<32; i++){
 			board[i][2].setRoad();
-			board[i][2].setNorthDirection();
+			board[i][2].setDirection(NORTH);
 
 			board[i][13].setRoad();
-			board[i][13].setNorthDirection();
+			board[i][13].setDirection(NORTH);
 
 			board[i][29].setRoad();
-			board[i][29].setSouthDirection();
+			board[i][29].setDirection(SOUTH);
 
 			board[i][26].setRoad();
-			board[i][26].setNorthDirection();
+			board[i][26].setDirection(NORTH);
 		}
 		for(int i=25; i<30; i++){
 			board[i][18].setRoad();
-			board[i][18].setNorthDirection();
+			board[i][18].setDirection(NORTH);
 		}
 		for(int i=21; i<26; i++){
 			board[i][13].setRoad();
-			board[i][13].setNorthDirection();
+			board[i][13].setDirection(NORTH);
 		}
 		for(int i=16; i<26; i++){
 			board[i][29].setRoad();
-			board[i][29].setSouthDirection();
+			board[i][29].setDirection(SOUTH);
 		}
 	}
 
