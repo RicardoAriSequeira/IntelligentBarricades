@@ -18,7 +18,7 @@ public class Car {
 		this.position = position;
 	} 
 	
-	public void go(Cell[][] board){
+	public void go(Map map){
 
 		/*
 

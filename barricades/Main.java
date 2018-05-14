@@ -9,11 +9,11 @@ import java.awt.EventQueue;
 public class Main {
 
 	public static void main(String[] args) {
-		Board board = new Board(32,32,1);
+		City city = new City(32, 32);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GraphicalInterface frame = new GraphicalInterface(board);
+					GraphicalInterface frame = new GraphicalInterface(city);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

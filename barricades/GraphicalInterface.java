@@ -26,66 +26,66 @@ public class GraphicalInterface extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	static JTextField speed;
-	static JPanel boardPanel;
+	static JPanel cityPanel;
 	static JButton run, reset, step;
 	
-	public GraphicalInterface(Board board) {
+	public GraphicalInterface(City city) {
 		setTitle("Barricades");		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
 		setSize(640, 600);
-		add(createButtonPanel(board));
-		boardPanel = new JPanel();
-		boardPanel.setSize(new Dimension(600,500));
-		boardPanel.setLocation(new Point(20,60));
-		boardPanel.setLayout(new GridLayout(board.nX,board.nY));
-		for(int i=0; i<board.nX; i++)
-			for(int j=0; j<board.nY; j++)
-				boardPanel.add(new JPanel());
-		displayBoard(board);
-		displayCars(board);
-		board.GUI = this;
-		add(boardPanel);
+		add(createButtonPanel(city));
+		cityPanel = new JPanel();
+		cityPanel.setSize(new Dimension(600,500));
+		cityPanel.setLocation(new Point(20,60));
+		cityPanel.setLayout(new GridLayout(city.nX,city.nY));
+		for(int i=0; i<city.nX; i++)
+			for(int j=0; j<city.nY; j++)
+				cityPanel.add(new JPanel());
+		displayCity(city);
+		displayCars(city);
+		city.GUI = this;
+		add(cityPanel);
 	}
 
-	public void displayBoard(Board board) {
-		for(int i=0; i<board.nX; i++){
-			for(int j=0; j<board.nY; j++){ 
-				JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+j));
+	public void displayCity(City city) {
+		for(int i=0; i<city.nX; i++){
+			for(int j=0; j<city.nY; j++){ 
+				JPanel p = ((JPanel)cityPanel.getComponent(i*city.nY+j));
 				p.setBackground(new Color(0,0,0));
 				p.setBorder(BorderFactory.createLineBorder(Color.white));
 			}
 		}
 
-		for(int i=0; i<board.nX; i++){
-			for(int j=0; j<board.nY; j++){
-				if (board.board[i][j].isRoad()){
-					JPanel p = ((JPanel)boardPanel.getComponent(i*board.nY+j));
+		for(int i=0; i<city.nX; i++){
+			for(int j=0; j<city.nY; j++){
+				if (city.map.board[i][j].isRoad()){
+					JPanel p = ((JPanel)cityPanel.getComponent(i*city.nY+j));
 					p.setBackground(new Color(255,255,255));
 				}
 			}
 		}
 
-		boardPanel.invalidate();
+		cityPanel.invalidate();
 	}
 	
-	public void removeCars(Board board) {
-		for(Car car : board.Cars){
-			JPanel p = ((JPanel)boardPanel.getComponent(car.position.x+car.position.y*board.nX));
+	public void removeCars(City city) {
+		for(Car car : city.Cars){
+			JPanel p = ((JPanel)cityPanel.getComponent(car.position.x+car.position.y*city.nX));
 			p.setBorder(BorderFactory.createLineBorder(Color.white));			
 		}
-		boardPanel.invalidate();
+		cityPanel.invalidate();
 	}
 
-	public void displayCars(Board board) {
-		for(Car car : board.Cars){
-			JPanel p = ((JPanel)boardPanel.getComponent(car.position.x+car.position.y*board.nX));
+	public void displayCars(City city) {
+		for(Car car : city.Cars){
+			JPanel p = ((JPanel)cityPanel.getComponent(car.position.x+car.position.y*city.nX));
 			p.setBorder(BorderFactory.createLineBorder(Color.red,3));			
 		}
-		boardPanel.invalidate();
+		cityPanel.invalidate();
 	}
 
-	private Component createButtonPanel(Board board) {
+	private Component createButtonPanel(City city) {
 		JPanel panel = new JPanel();
 		panel.setSize(new Dimension(600,50));
 		panel.setLocation(new Point(0,0));
@@ -94,15 +94,15 @@ public class GraphicalInterface extends JFrame {
 		panel.add(step);
 		step.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(run.getText().equals("Run")) board.step();
-				else board.stop();
+				if(run.getText().equals("Run")) city.step();
+				else city.stop();
 			}
 		});
 		reset = new JButton("Reset");
 		panel.add(reset);
 		reset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				board.reset();
+				city.reset();
 			}
 		});
 		run = new JButton("Run");
@@ -119,11 +119,11 @@ public class GraphicalInterface extends JFrame {
 						JOptionPane.showMessageDialog(null, output, "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 					if(time>0){
-						board.run(time);
+						city.run(time);
 	 					run.setText("Stop");						
 					}
  				} else {
-					board.stop();
+					city.stop();
  					run.setText("Run");
  				}
 			}
