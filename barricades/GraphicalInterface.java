@@ -30,7 +30,7 @@ public class GraphicalInterface extends JFrame {
 	static JButton run, reset, step;
 	
 	public GraphicalInterface(Board board) {
-		setTitle("FirePrevention");		
+		setTitle("Barricades");		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
 		setSize(640, 600);
@@ -70,7 +70,7 @@ public class GraphicalInterface extends JFrame {
 	}
 	
 	public void removeCars(Board board) {
-		for(Car car : board.UAVs){
+		for(Car car : board.Cars){
 			JPanel p = ((JPanel)boardPanel.getComponent(car.position.x+car.position.y*board.nX));
 			p.setBorder(BorderFactory.createLineBorder(Color.white));			
 		}
@@ -78,7 +78,7 @@ public class GraphicalInterface extends JFrame {
 	}
 
 	public void displayCars(Board board) {
-		for(Car car : board.UAVs){
+		for(Car car : board.Cars){
 			JPanel p = ((JPanel)boardPanel.getComponent(car.position.x+car.position.y*board.nX));
 			p.setBorder(BorderFactory.createLineBorder(Color.red,3));			
 		}

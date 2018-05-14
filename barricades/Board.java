@@ -15,7 +15,7 @@ public class Board {
 	/** A: Environment */
 
 	public int nX, nY, nUAVs;
-	public List<Car> UAVs;
+	public List<Car> Cars;
 	public Cell[][] board;
 	public GraphicalInterface GUI;
 	
@@ -27,9 +27,13 @@ public class Board {
 	}
 
 	private void initialize() {
-		UAVs = new ArrayList<Car>();
-		for(int i=0; i<nUAVs && i<nY; i++) UAVs.add(new Car(new Point(0,i)));
+
+		Cars = new ArrayList<Car>();
+
+		Cars.add(new Car(new Point(16,16)));
+
 		board = new Cell[nX][nY];
+
 		for(int i=0; i<nX; i++)
 			for(int j=0; j<nY; j++)
 				board[i][j] = new Cell();
@@ -188,9 +192,11 @@ public class Board {
 		}
 		
 	    public void run() {
+
 	    	while(running){
+
 		    	removeCars();
-				for(Car a : UAVs) a.go();
+				for(Car a : Cars) a.go(board);
 				displayCars();
 				try {
 					sleep(time*10);
@@ -215,7 +221,7 @@ public class Board {
 
 	public void step() {
 		removeCars();
-		for(Car a : UAVs) a.go();
+		for(Car a : Cars) a.go(board);
 		displayCars();
 	}
 
