@@ -15,7 +15,7 @@ public class Board {
 	/** A: Environment */
 
 	public int nX, nY, nUAVs;
-	public List<Agent> UAVs;
+	public List<Car> UAVs;
 	public Cell[][] board;
 	public GraphicalInterface GUI;
 	
@@ -27,8 +27,8 @@ public class Board {
 	}
 
 	private void initialize() {
-		UAVs = new ArrayList<Agent>();
-		for(int i=0; i<nUAVs && i<nY; i++) UAVs.add(new Agent(new Point(0,i)));
+		UAVs = new ArrayList<Car>();
+		for(int i=0; i<nUAVs && i<nY; i++) UAVs.add(new Car(new Point(0,i)));
 		board = new Cell[nX][nY];
 		for(int i=0; i<nX; i++)
 			for(int j=0; j<nY; j++)
@@ -172,9 +172,9 @@ public class Board {
 		
 	    public void run() {
 	    	while(running){
-		    	removeAgents();
-				for(Agent a : UAVs) a.go();
-				displayAgents();
+		    	removeCars();
+				for(Car a : UAVs) a.go();
+				displayCars();
 				try {
 					sleep(time*10);
 				} catch (InterruptedException e) {
@@ -187,36 +187,36 @@ public class Board {
 	public void run(int time) {
 		runThread = new RunThread(time);
 		runThread.start();
-		displayAgents();
+		displayCars();
 	}
 
 	public void reset() {
 		initialize();
 		displayBoard();
-		displayAgents();	
+		displayCars();	
 	}
 
 	public void step() {
-		removeAgents();
-		for(Agent a : UAVs) a.go();
-		displayAgents();
+		removeCars();
+		for(Car a : UAVs) a.go();
+		displayCars();
 	}
 
 	public void stop() {
 		runThread.interrupt();
 		runThread.terminate();
-		displayAgents();
+		displayCars();
 	}
 
 	public void displayBoard(){
 		GUI.displayBoard(this);
 	}
 
-	public void displayAgents(){
-		GUI.displayAgents(this);
+	public void displayCars(){
+		GUI.displayCars(this);
 	}
 	
-	public void removeAgents(){
-		GUI.removeAgents(this);
+	public void removeCars(){
+		GUI.removeCars(this);
 	}
 }
