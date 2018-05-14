@@ -43,7 +43,7 @@ public class GraphicalInterface extends JFrame {
 			for(int j=0; j<board.nY; j++)
 				boardPanel.add(new JPanel());
 		displayBoard(board);
-		displayAgents(board);
+		displayCars(board);
 		board.GUI = this;
 		add(boardPanel);
 	}
@@ -201,17 +201,17 @@ public class GraphicalInterface extends JFrame {
 		boardPanel.invalidate();
 	}
 	
-	public void removeAgents(Board board) {
-		for(Agent agent : board.UAVs){
-			JPanel p = ((JPanel)boardPanel.getComponent(agent.position.x+agent.position.y*board.nX));
+	public void removeCars(Board board) {
+		for(Car car : board.UAVs){
+			JPanel p = ((JPanel)boardPanel.getComponent(car.position.x+car.position.y*board.nX));
 			p.setBorder(BorderFactory.createLineBorder(Color.white));			
 		}
 		boardPanel.invalidate();
 	}
 
-	public void displayAgents(Board board) {
-		for(Agent agent : board.UAVs){
-			JPanel p = ((JPanel)boardPanel.getComponent(agent.position.x+agent.position.y*board.nX));
+	public void displayCars(Board board) {
+		for(Car car : board.UAVs){
+			JPanel p = ((JPanel)boardPanel.getComponent(car.position.x+car.position.y*board.nX));
 			p.setBorder(BorderFactory.createLineBorder(Color.red,3));			
 		}
 		boardPanel.invalidate();
