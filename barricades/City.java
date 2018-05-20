@@ -3,6 +3,7 @@ package barricades;
 import java.awt.Point;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -31,7 +32,7 @@ public class City {
 
 		Cars = new ArrayList<Car>();
 
-		Cars.add(new Car(new Point(16,16)));
+		Cars.add(new Car(new Point(15,16)));
 	}
 
 	
@@ -59,6 +60,15 @@ public class City {
 
 		    	removeCars();
 				for(Car a : Cars) a.go(map);
+
+				Iterator<Car> itr = Cars.iterator();
+
+				while (itr.hasNext()) {
+					Car car = itr.next();
+					if (!car.inCity(map))
+						itr.remove();
+				}
+
 				displayCars();
 				try {
 					sleep(time*10);

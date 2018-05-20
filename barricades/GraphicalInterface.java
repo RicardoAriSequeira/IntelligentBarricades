@@ -128,7 +128,7 @@ public class GraphicalInterface extends JFrame {
  				}
 			}
 		});
-		speed = new JTextField(" time per step in [1,100] ");
+		speed = new JTextField("20");
 		speed.setMargin(new Insets(5,5,5,5));
 		panel.add(speed);
 		
