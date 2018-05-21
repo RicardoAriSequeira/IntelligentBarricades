@@ -18,8 +18,13 @@ public class Car {
 	}
 
 	public boolean inCity(Map map) {
-		if (this.position.x < map.nX && this.position.y < map.nY && this.position.x >= 0 && this.position.y >= 0)
+
+		if (this.position.x < map.nX &&
+			this.position.y < map.nY &&
+			this.position.x >= 0 &&
+			this.position.y >= 0)
 			return true;
+		
 		return false;
 	}
 	

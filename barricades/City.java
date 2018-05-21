@@ -29,10 +29,9 @@ public class City {
 
 	private void initialize() {
 		map = new Map( nX, nY);
-
 		Cars = new ArrayList<Car>();
-
-		Cars.add(new Car(new Point(15,16)));
+		Cars.add(new Car(new Point(10,16)));
+		Cars.add(new Car(new Point(20,16)));
 	}
 
 	
@@ -60,15 +59,7 @@ public class City {
 
 		    	removeCars();
 				for(Car a : Cars) a.go(map);
-
-				Iterator<Car> itr = Cars.iterator();
-
-				while (itr.hasNext()) {
-					Car car = itr.next();
-					if (!car.inCity(map))
-						itr.remove();
-				}
-
+				deleteCars();
 				displayCars();
 				try {
 					sleep(time*10);
@@ -77,6 +68,15 @@ public class City {
 				}
 	    	}
 	    }
+	}
+
+	public void deleteCars() {
+		Iterator<Car> itr = Cars.iterator();
+		while (itr.hasNext()) {
+			Car car = itr.next();
+			if (!car.inCity(map))
+				itr.remove();
+		}
 	}
 	
 	public void run(int time) {

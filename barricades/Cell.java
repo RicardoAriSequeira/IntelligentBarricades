@@ -18,6 +18,7 @@ public class Cell {
 	} 
 
 	public void setDirection(int direction) {
+		this.setRoad();
 		directions[direction] = true;
 	}
 
