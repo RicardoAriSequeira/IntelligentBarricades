@@ -23,6 +23,9 @@ public class Map {
 		return board[x][y];
 	}
 
+	/*public boolean hasCar(int x, int y) {
+		return board[x][y].getHasCar();		
+	}*/
 	private void initialize() {
 
 		board = new Cell[nX][nY];

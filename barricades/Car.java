@@ -32,6 +32,9 @@ public class Car {
 
 		if (inCity(map)) {
 
+			Cell prevCell = map.getCell(position.x, position.y);
+			prevCell.setHasCarFalse();
+
 			boolean[] positionDirections = map.getCell(position.x, position.y).getDirections();
 
 			if (!map.getCell(position.x, position.y).isRoad()) {
@@ -63,6 +66,10 @@ public class Car {
 			else if (direction == WEST)
 				this.position.x--;
 
+			if (inCity(map)) {
+				Cell currentCell = map.getCell(position.x, position.y);
+				currentCell.setHasCarTrue();
+			}
 		}
 
 	}
