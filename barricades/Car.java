@@ -54,17 +54,26 @@ public class Car {
 				direction = generator.nextInt(4);
 			}
 
+			Point nextPosition = new Point(position.x, position.y);
+
 			if (direction == NORTH)
-				this.position.y--;
+				nextPosition.y--;
 
 			else if (direction == SOUTH)
-				this.position.y++;
+				nextPosition.y++;
 
 			else if (direction == EAST)
-				this.position.x++;
+				nextPosition.x++;
 
 			else if (direction == WEST)
-				this.position.x--;
+				nextPosition.x--;
+
+			if ((nextPosition.y) >= 0 && (nextPosition.y) < map.nY && (nextPosition.x) < map.nX && (nextPosition.x) >= 0 )
+				if (map.getCell(nextPosition.x, nextPosition.y).getHasCar() == false)
+					this.position = nextPosition;
+			else
+				this.position = nextPosition;
+
 
 			if (inCity(map)) {
 				Cell currentCell = map.getCell(position.x, position.y);
@@ -81,3 +90,17 @@ public class Car {
 	/** C: decision process */
 
 }
+
+
+/*			if (direction == NORTH && (position.y - 1) >= 0 && map.getCell(position.x, position.y - 1).getHasCar() == false)
+				this.position.y--;
+
+			else if (direction == SOUTH && (position.y + 1) <= map.nY && map.getCell(position.x, position.y + 1).getHasCar() == false)
+				this.position.y++;
+
+			else if (direction == EAST && (position.x + 1) <= map.nX && map.getCell(position.x + 1, position.y).getHasCar() == false)
+				this.position.x++;
+
+			else if (direction == WEST && (position.x - 1) >= 0 && map.getCell(position.x - 1, position.y).getHasCar() == false)
+				this.position.x--;
+*/
