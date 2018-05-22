@@ -8,12 +8,14 @@ public class Cell {
 	public static final int WEST = 3;
 
 	private boolean isRoad;
+	private boolean hasCar;
 
 	// North, South, East, West
 	private boolean[] directions;
 
 	public Cell(){
 		isRoad = false;
+		hasCar = false;
 		directions = new boolean[4];
 	} 
 
@@ -32,6 +34,18 @@ public class Cell {
 
 	public boolean[] getDirections() {
 		return directions;
+	}
+
+	public boolean getHasCar(){
+		return hasCar;
+	}
+
+	public void setHasCarFalse(){
+		hasCar = false;
+	}
+
+	public void setHasCarTrue(){
+		hasCar = true;
 	}
 
 }
