@@ -63,7 +63,7 @@ public class City {
 
 		    	removeCars();
 				for(Car a : Cars) a.go(map);
-				deleteCars();
+				substituteCars();
 				displayCars();
 				try {
 					sleep(time*10);
@@ -74,23 +74,30 @@ public class City {
 	    }
 	}
 
-	public void deleteCars() {
+	public void substituteCars() {
+
+		int deletedCars = 0;
+
 		Iterator<Car> itr = Cars.iterator();
+
 		while (itr.hasNext()) {
 			Car car = itr.next();
-			if (!car.inCity(map))
+			if (!car.inCity(map)) {
 				itr.remove();
+				deletedCars++;
+			}
 		}
+
+		for (int c = 0; c < deletedCars; c++)
+			insertCar();
+
 	}
 
 	public void insertCar() {
-
 		List<Cell> entryCells = map.getEntryCells();
-
 		Random generator = new Random();
-		int randomEntryCell = generator.nextInt(entryCells.size());
-
-		Cars.add(new Car(new Point(10,16)));
+		Cell randomEntryCell = entryCells.get(generator.nextInt(entryCells.size()));
+		Cars.add(new Car(new Point(randomEntryCell.getCoordinates())));
 	}
 	
 	public void run(int time) {

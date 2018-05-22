@@ -32,10 +32,11 @@ public class Map {
 
 		board[x][y].setDirection(direction);
 
-		if ((direction == NORTH && y == nY-1) ||
-			(direction == SOUTH && y == 0) ||
-			(direction == EAST && x == nX-1) ||
-			(direction == WEST && x == 0))
+		if ((direction == NORTH && x == nX-1) ||
+			(direction == SOUTH && x == 0) ||
+			(direction == EAST && y == 0) ||
+			(direction == WEST && y == nY-1))
+
 			entryCells.add(board[x][y]);
 
 	}
@@ -53,7 +54,7 @@ public class Map {
 
 			for(int j=0; j<nY; j++) {
 
-				board[i][j] = new Cell();
+				board[i][j] = new Cell(i,j);
 
 				if (i == (nX-1)) {
 
@@ -110,8 +111,12 @@ public class Map {
 
 		}
 
+		/*
+
 		for(int i=0; i<nX; i++)
 			for(int j=0; j<nY; j++)
 				System.out.print(i + " " + j + " : " + board[i][j].getDirections()[0] + " " + board[i][j].getDirections()[1] + " " + board[i][j].getDirections()[2] + " " + board[i][j].getDirections()[3] + " " + "\n");
+
+				*/
 	}
 }

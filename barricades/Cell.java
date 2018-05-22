@@ -1,5 +1,7 @@
 package barricades;
 
+import java.awt.Point;
+
 public class Cell {
 
 	public static final int NORTH = 0;
@@ -7,45 +9,34 @@ public class Cell {
 	public static final int EAST = 2;
 	public static final int WEST = 3;
 
-	private boolean isRoad;
-	private boolean hasCar;
+	private Point coordinates;
+	private boolean isRoad, hasCar;
 
 	// North, South, East, West
 	private boolean[] directions;
 
-	public Cell(){
+	public Cell(int x, int y){
+		coordinates = new Point(y,x);
 		isRoad = false;
 		hasCar = false;
 		directions = new boolean[4];
-	} 
+	}
+
+	public Point getCoordinates() {return coordinates;}
+
+	public boolean isRoad() {return isRoad;}
+
+	public boolean[] getDirections() {return directions;}
+
+	public boolean getHasCar() {return hasCar;}
+
+	public void setHasCarFalse() {hasCar = false;}
+
+	public void setHasCarTrue() {hasCar = true;}
 
 	public void setDirection(int direction) {
-		this.setRoad();
-		directions[direction] = true;
-	}
-
-	public void setRoad() {
 		isRoad = true;
-	}
-
-	public boolean isRoad() {
-		return isRoad;
-	}
-
-	public boolean[] getDirections() {
-		return directions;
-	}
-
-	public boolean getHasCar(){
-		return hasCar;
-	}
-
-	public void setHasCarFalse(){
-		hasCar = false;
-	}
-
-	public void setHasCarTrue(){
-		hasCar = true;
+		directions[direction] = true;
 	}
 
 }
