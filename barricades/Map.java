@@ -28,6 +28,10 @@ public class Map {
 		return board[x][y];
 	}
 
+	public Cell getCell(Point p) {
+		return board[p.x][p.y];
+	}
+
 	public void setCellDirection(int x, int y, int direction) {
 
 		board[x][y].setDirection(direction);
@@ -43,6 +47,11 @@ public class Map {
 
 	public List<Cell> getEntryCells() {
 		return entryCells;
+	}
+
+	public boolean inMap(Point p) {
+		if (p.x < nX && p.y < nY && p.x >= 0 && p.y >= 0) return true;
+		return false;
 	}
 
 	private void initialize() {
@@ -77,9 +86,7 @@ public class Map {
 					}
 					if (j>22 && j<29)
 						setCellDirection(12, j, WEST);
-
 				}
-
 			}
 
 			setCellDirection(i, 8, SOUTH);

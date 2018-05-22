@@ -9,11 +9,10 @@ public class Cell {
 	public static final int EAST = 2;
 	public static final int WEST = 3;
 
-	private Point coordinates;
-	private boolean isRoad, hasCar;
-
 	// North, South, East, West
 	private boolean[] directions;
+	private Point coordinates;
+	private boolean isRoad, hasCar;
 
 	public Cell(int x, int y){
 		coordinates = new Point(y,x);
@@ -30,9 +29,7 @@ public class Cell {
 
 	public boolean getHasCar() {return hasCar;}
 
-	public void setHasCarFalse() {hasCar = false;}
-
-	public void setHasCarTrue() {hasCar = true;}
+	public void setHasCar(boolean value) {hasCar = value;}
 
 	public void setDirection(int direction) {
 		isRoad = true;

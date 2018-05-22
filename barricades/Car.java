@@ -18,31 +18,24 @@ public class Car {
 	}
 
 	public boolean inCity(Map map) {
-
-		if (this.position.x < map.nX &&
-			this.position.y < map.nY &&
-			this.position.x >= 0 &&
-			this.position.y >= 0)
-			return true;
-		
-		return false;
+		return map.inMap(this.position);
 	}
 	
 	public void go(Map map){
 
 		if (inCity(map)) {
 
-			Cell prevCell = map.getCell(position.x, position.y);
-			prevCell.setHasCarFalse();
+			boolean[] positionDirections = map.getCell(position).getDirections();
 
-			boolean[] positionDirections = map.getCell(position.x, position.y).getDirections();
-
-			if (!map.getCell(position.x, position.y).isRoad()) {
+			if (!map.getCell(position).isRoad()) {
 				System.out.println("Error: no road in cell (" + position.y + "," + position.x + ")");
 				return;
 			}
 
-			if (positionDirections[0] == false && positionDirections[1] == false && positionDirections[2] == false && positionDirections[3] == false) {
+			if (positionDirections[0] == false &&
+				positionDirections[1] == false &&
+				positionDirections[2] == false &&
+				positionDirections[3] == false) {
 				System.out.println("Error: there is no directions in cell (" + position.y + "," + position.x + ")");
 				return;
 			}
@@ -54,33 +47,26 @@ public class Car {
 				direction = generator.nextInt(4);
 			}
 
-			Point nextPosition = new Point(position.x, position.y);
+			Point nextPosition = new Point(position);
 
-			if (direction == NORTH)
-				nextPosition.y--;
+			if (direction == NORTH) nextPosition.y--;
+			else if (direction == SOUTH) nextPosition.y++;
+			else if (direction == EAST) nextPosition.x++;
+			else if (direction == WEST) nextPosition.x--;
 
-			else if (direction == SOUTH)
-				nextPosition.y++;
+			if (map.inMap(nextPosition)){
 
-			else if (direction == EAST)
-				nextPosition.x++;
-
-			else if (direction == WEST)
-				nextPosition.x--;
-
-			if ((nextPosition.y) >= 0 && (nextPosition.y) < map.nY && (nextPosition.x) < map.nX && (nextPosition.x) >= 0 )
-				if (map.getCell(nextPosition.x, nextPosition.y).getHasCar() == false)
+				if (map.getCell(nextPosition).getHasCar() == false) {
+					map.getCell(position).setHasCar(false);
 					this.position = nextPosition;
-			else
+					map.getCell(position).setHasCar(true);
+				}
+
+			} else {
+				map.getCell(position).setHasCar(false);
 				this.position = nextPosition;
-
-
-			if (inCity(map)) {
-				Cell currentCell = map.getCell(position.x, position.y);
-				currentCell.setHasCarTrue();
 			}
 		}
-
 	}
 	
 	/** A: actuators */
@@ -90,17 +76,3 @@ public class Car {
 	/** C: decision process */
 
 }
-
-
-/*			if (direction == NORTH && (position.y - 1) >= 0 && map.getCell(position.x, position.y - 1).getHasCar() == false)
-				this.position.y--;
-
-			else if (direction == SOUTH && (position.y + 1) <= map.nY && map.getCell(position.x, position.y + 1).getHasCar() == false)
-				this.position.y++;
-
-			else if (direction == EAST && (position.x + 1) <= map.nX && map.getCell(position.x + 1, position.y).getHasCar() == false)
-				this.position.x++;
-
-			else if (direction == WEST && (position.x - 1) >= 0 && map.getCell(position.x - 1, position.y).getHasCar() == false)
-				this.position.x--;
-*/
