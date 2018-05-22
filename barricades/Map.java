@@ -28,10 +28,6 @@ public class Map {
 		return board[x][y];
 	}
 
-	public Cell getCell(Point p) {
-		return board[p.x][p.y];
-	}
-
 	public void setCellDirection(int x, int y, int direction) {
 
 		board[x][y].setDirection(direction);

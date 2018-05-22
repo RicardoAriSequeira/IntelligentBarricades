@@ -25,9 +25,9 @@ public class Car {
 
 		if (inCity(map)) {
 
-			boolean[] positionDirections = map.getCell(position).getDirections();
+			boolean[] positionDirections = map.getCell(position.x,position.y).getDirections();
 
-			if (!map.getCell(position).isRoad()) {
+			if (!map.getCell(position.x, position.y).isRoad()) {
 				System.out.println("Error: no road in cell (" + position.y + "," + position.x + ")");
 				return;
 			}
@@ -56,14 +56,14 @@ public class Car {
 
 			if (map.inMap(nextPosition)){
 
-				if (map.getCell(nextPosition).getHasCar() == false) {
-					map.getCell(position).setHasCar(false);
+				if (map.getCell(nextPosition.x, nextPosition.y).getHasCar() == false) {
+					map.getCell(position.x, position.y).setHasCar(false);
 					this.position = nextPosition;
-					map.getCell(position).setHasCar(true);
+					map.getCell(position.x, position.y).setHasCar(true);
 				}
 
 			} else {
-				map.getCell(position).setHasCar(false);
+				map.getCell(position.x, position.y).setHasCar(false);
 				this.position = nextPosition;
 			}
 		}
