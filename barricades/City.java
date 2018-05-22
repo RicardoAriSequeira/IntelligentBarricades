@@ -13,6 +13,10 @@ import java.util.Random;
  */
 public class City {
 
+	public static final int NORTH = 0;
+	public static final int SOUTH = 1;
+	public static final int EAST = 2;
+	public static final int WEST = 3;
 
 	/** A: Environment */
 
@@ -77,6 +81,16 @@ public class City {
 			if (!car.inCity(map))
 				itr.remove();
 		}
+	}
+
+	public void insertCar() {
+
+		List<Cell> entryCells = map.getEntryCells();
+
+		Random generator = new Random();
+		int randomEntryCell = generator.nextInt(entryCells.size());
+
+		Cars.add(new Car(new Point(10,16)));
 	}
 	
 	public void run(int time) {

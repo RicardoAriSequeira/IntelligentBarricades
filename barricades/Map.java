@@ -2,6 +2,9 @@ package barricades;
 
 import java.awt.Point;
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class Map {
 
@@ -13,6 +16,8 @@ public class Map {
 	public Cell[][] board;
 	public int nX, nY;
 
+	private List<Cell> entryCells;
+
 	public Map(int nX, int nY){
 		this.nX = nX;
 		this.nY = nY;
@@ -23,9 +28,26 @@ public class Map {
 		return board[x][y];
 	}
 
+	public void setCellDirection(int x, int y, int direction) {
+
+		board[x][y].setDirection(direction);
+
+		if ((direction == NORTH && y == nY-1) ||
+			(direction == SOUTH && y == 0) ||
+			(direction == EAST && x == nX-1) ||
+			(direction == WEST && x == 0))
+			entryCells.add(board[x][y]);
+
+	}
+
+	public List<Cell> getEntryCells() {
+		return entryCells;
+	}
+
 	private void initialize() {
 
 		board = new Cell[nX][nY];
+		entryCells = new ArrayList<Cell>();
 
 		for(int i=0; i<nX; i++) {
 
@@ -35,65 +57,55 @@ public class Map {
 
 				if (i == (nX-1)) {
 
-					board[3][j].setDirection(EAST);
-					board[16][j].setDirection(WEST);
-					board[17][j].setDirection(EAST);
-					board[21][j].setDirection(EAST);
-					board[25][j].setDirection(WEST);
-					board[29][j].setDirection(EAST);
+					setCellDirection(3, j, EAST);
+					setCellDirection(16, j, WEST);
+					setCellDirection(17, j, EAST);
+					setCellDirection(21, j, EAST);
+					setCellDirection(25, j, WEST);
+					setCellDirection(29, j, EAST);
 
-					if (j<4)
-						board[10][j].setDirection(WEST);
+					if ((j<4) || (j>8 && j<14) || (j>18 && j<24) || (j>28 && j<32))
+						setCellDirection(10, j, WEST);
 					if (j>3 && j<9) {
-						board[7][j].setDirection(WEST);
-						board[12][j].setDirection(EAST);
+						setCellDirection(7, j, WEST);
+						setCellDirection(12, j, EAST);
 					}
-					if (j>8 && j<14)
-						board[10][j].setDirection(WEST);
 					if (j>13 && j<18) {
-						board[8][j].setDirection(WEST);
-						board[13][j].setDirection(EAST);
+						setCellDirection(8, j, WEST);
+						setCellDirection(13, j, EAST);
 					}
-					if (j>18 && j<24)
-						board[10][j].setDirection(WEST);
 					if (j>22 && j<29)
-						board[12][j].setDirection(WEST);
-					if (j>27 && j<32)
-						board[10][j].setDirection(WEST);
+						setCellDirection(12, j, WEST);
 
 				}
 
 			}
 
-			board[i][8].setDirection(SOUTH);
-			board[i][9].setDirection(NORTH);
-			board[i][22].setDirection(SOUTH);
-			board[i][23].setDirection(NORTH);
+			setCellDirection(i, 8, SOUTH);
+			setCellDirection(i, 9, NORTH);
+			setCellDirection(i, 22, SOUTH);
+			setCellDirection(i, 23, NORTH);
 
 			if (i<17) {
-				board[i][3].setDirection(NORTH);
-				board[i][13].setDirection(SOUTH);
-				board[i][28].setDirection(SOUTH);
+				setCellDirection(i, 3, NORTH);
+				setCellDirection(i, 13, SOUTH);
+				setCellDirection(i, 28, SOUTH);
 			}
-			if (i<21)
-				board[i][18].setDirection(NORTH);
-			if (i>15 && i<25)
-				board[i][29].setDirection(SOUTH);
+			if ((i<21) || (i>25 && i<30))
+				setCellDirection(i, 18, NORTH);
+			if ((i>15 && i<25) || (i>28 && i<32))
+				setCellDirection(i, 29, SOUTH);
 			if (i>16 && i<32) {
-				board[i][5].setDirection(SOUTH);
-				board[i][2].setDirection(NORTH);
-				board[i][26].setDirection(NORTH);
+				setCellDirection(i, 5, SOUTH);
+				setCellDirection(i, 2, NORTH);
+				setCellDirection(i, 26, NORTH);
 			}
 			if (i>21 && i<26)
-				board[i][13].setDirection(NORTH);
-			if (i>25 && i<30)
-				board[i][18].setDirection(NORTH);
-			if (i>28 && i<32)
-				board[i][29].setDirection(SOUTH);
+				setCellDirection(i, 13, NORTH);
 			if (i>29 && i<32) {
-				board[i][2].setDirection(NORTH);
-				board[i][13].setDirection(NORTH);
-				board[i][26].setDirection(NORTH);
+				setCellDirection(i, 2, NORTH);
+				setCellDirection(i, 13, NORTH);
+				setCellDirection(i, 26, NORTH);
 			}
 
 		}
