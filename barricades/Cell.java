@@ -1,6 +1,8 @@
 package barricades;
 
 import java.awt.Point;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Cell {
 
@@ -11,6 +13,7 @@ public class Cell {
 
 	// North, South, East, West
 	private boolean[] directions;
+	private List<Integer> possibleDirections;
 	private Point coordinates;
 	private boolean isRoad, hasCar;
 
@@ -19,6 +22,7 @@ public class Cell {
 		isRoad = false;
 		hasCar = false;
 		directions = new boolean[4];
+		possibleDirections = new ArrayList<Integer>();
 	}
 
 	public Point getCoordinates() {return coordinates;}
@@ -27,13 +31,22 @@ public class Cell {
 
 	public boolean[] getDirections() {return directions;}
 
+	public List<Integer> getPossibleDirections() {return possibleDirections;}
+
 	public boolean getHasCar() {return hasCar;}
 
 	public void setHasCar(boolean value) {hasCar = value;}
 
 	public void setDirection(int direction) {
-		isRoad = true;
-		directions[direction] = true;
+
+		if (directions[direction] == false) {
+
+			isRoad = true;
+			directions[direction] = true;
+			possibleDirections.add(direction);
+
+		}
+
 	}
 
 }
