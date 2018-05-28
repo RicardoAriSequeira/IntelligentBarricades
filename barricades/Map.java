@@ -25,7 +25,13 @@ public class Map {
 	}
 
 	public Cell getCell(int y, int x) {
-		return board[x][y];
+		if (inMap(x,y)) return board[x][y];
+		return null;
+	}
+
+	public Cell getCell(Point p) {
+		if (inMap(p)) return board[p.x][p.y];
+		return null;
 	}
 
 	public void setCellDirection(int x, int y, int direction) {
@@ -41,13 +47,25 @@ public class Map {
 
 	}
 
-	public List<Cell> getEntryCells() {
-		return entryCells;
+	public List<Cell> getEntryCells() {return entryCells;}
+
+	public boolean inMap(int x, int y) {
+		if (x < nX && y < nY && x >= 0 && y >= 0) return true;
+		return false;
 	}
 
-	public boolean inMap(Point p) {
-		if (p.x < nX && p.y < nY && p.x >= 0 && p.y >= 0) return true;
+	public boolean inMap(Point p) {return inMap(p.x, p.y);}
+
+	public boolean isCellRoad(int x, int y) {
+
+		Cell cell = getCell(x,y);
+
+		if (cell != null) {
+			return cell.isRoad();
+		}
+
 		return false;
+
 	}
 
 	private void initialize() {

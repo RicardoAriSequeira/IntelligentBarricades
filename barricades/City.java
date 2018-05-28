@@ -55,9 +55,12 @@ public class City {
 		Cars.add(new Car(new Point(20,16)));
 		Cars.add(new Car(new Point(8,17)));
 		Cars.add(new Car(new Point(17,17)));*/
-		Polices.add(new Police(new Point(30,16)));
-		Polices.add(new Police(new Point(3,21)));
-		Cars.add(new Thief(new Point(1,3)));
+		Polices.add(new Police(map,new Point(21,16)));
+		//map.getCell(new Point(23,16)).setCar(Polices.get(0));
+		//Polices.add(new Police(new Point(16,17)));
+		//map.getCell(new Point(16,17)).setCar(Polices.get(1));
+		Cars.add(new Thief(map,new Point(20,16)));
+		//map.getCell(new Point(20,16)).setCar(Cars.get(0));
 	}
 
 	
@@ -109,7 +112,7 @@ public class City {
 		while (itr.hasNext()) {
 			Car car = itr.next();
 
-			if (!car.inCity(map)) {
+			if (!map.inMap(car.position)) {
 				itr.remove();
 				if (car instanceof Thief) deletedThief = true;
 				else deletedCars++;
@@ -117,7 +120,7 @@ public class City {
 		}
 		while (itrP.hasNext()) {
 			Police police = itrP.next();
-			if (!police.inCity(map)) {
+			if (!map.inMap(police.position)) {
 				itrP.remove();
 				deletedPolices++;
 			}
@@ -135,20 +138,20 @@ public class City {
 		List<Cell> entryCells = map.getEntryCells();
 		Random generator = new Random();
 		Cell randomEntryCell = entryCells.get(generator.nextInt(entryCells.size()));
-		Cars.add(new Car(new Point(randomEntryCell.getCoordinates())));
+		Cars.add(new Civil(map,new Point(randomEntryCell.getCoordinates())));
 	}
 
 	public void insertPolice() {
 		List<Cell> entryCells = map.getEntryCells();
 		Random generator = new Random();
 		Cell randomEntryCell = entryCells.get(generator.nextInt(entryCells.size()));
-		Polices.add(new Police(new Point(randomEntryCell.getCoordinates())));
+		Polices.add(new Police(map,new Point(randomEntryCell.getCoordinates())));
 	}
 	public void insertThief() {
 		List<Cell> entryCells = map.getEntryCells();
 		Random generator = new Random();
 		Cell randomEntryCell = entryCells.get(generator.nextInt(entryCells.size()));
-		Cars.add(new Thief(new Point(randomEntryCell.getCoordinates())));
+		Cars.add(new Thief(map,new Point(randomEntryCell.getCoordinates())));
 	}		
 
 	public void run(int time) {

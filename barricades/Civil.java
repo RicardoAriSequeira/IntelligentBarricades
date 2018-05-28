@@ -4,10 +4,10 @@ import java.awt.Point;
 import java.util.Random;
 import java.util.List;
 
-public class Thief extends Car {
+public class Civil extends Car {
 
-	public Thief(Map map, Point position){
-		super(map, position);
+	public Civil(Map map, Point position){
+		super(map,position);
 	}
 
 	protected int directionDecision(Map map, List<Integer> possibleDirections) {

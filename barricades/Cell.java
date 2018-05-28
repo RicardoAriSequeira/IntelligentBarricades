@@ -15,12 +15,13 @@ public class Cell {
 	private boolean[] directions;
 	private List<Integer> possibleDirections;
 	private Point coordinates;
-	private boolean isRoad, hasCar;
+	private boolean isRoad;
+	private Car car;
 
 	public Cell(int x, int y){
 		coordinates = new Point(y,x);
 		isRoad = false;
-		hasCar = false;
+		car = null;
 		directions = new boolean[4];
 		possibleDirections = new ArrayList<Integer>();
 	}
@@ -29,13 +30,17 @@ public class Cell {
 
 	public boolean isRoad() {return isRoad;}
 
+	public boolean hasCar() {return !(this.car == null);}
+
 	public boolean[] getDirections() {return directions;}
 
 	public List<Integer> getPossibleDirections() {return possibleDirections;}
 
-	public boolean getHasCar() {return hasCar;}
+	public Car getCar() {return car;}
 
-	public void setHasCar(boolean value) {hasCar = value;}
+	public void setCar(Car car) {this.car = car;}
+
+	public void setNoCar() {this.car = null;}
 
 	public void setDirection(int direction) {
 
