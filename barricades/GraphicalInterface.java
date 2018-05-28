@@ -79,19 +79,27 @@ public class GraphicalInterface extends JFrame {
 			p.setBorder(BorderFactory.createLineBorder(Color.white));
 			p.setBackground(Color.white);		
 		}
+		for(Police police : city.Polices){
+			JPanel p = ((JPanel)cityPanel.getComponent(police.position.x+police.position.y*city.nX));
+			p.setBorder(BorderFactory.createLineBorder(Color.white));
+			p.setBackground(Color.white);		
+		}
 		cityPanel.invalidate();
 	}
 
 	public void displayCars(City city) {
 		for(Car car : city.Cars){
 			JPanel p = ((JPanel)cityPanel.getComponent(car.position.x+car.position.y*city.nX));
-			//p.setBorder(BorderFactory.createLineBorder(Color.red,3));
-			if (car instanceof Police) {
-				p.setBackground(Color.blue);
-				p.setBorder(BorderFactory.createLineBorder(Color.red));
+			if(car instanceof Thief){
+				p.setBackground(Color.red);
 			} else {
 				p.setBackground(Color.gray);		
 			}
+		}
+		for(Police police : city.Polices){
+			JPanel p = ((JPanel)cityPanel.getComponent(police.position.x+police.position.y*city.nX));
+				p.setBackground(Color.blue);
+				p.setBorder(BorderFactory.createLineBorder(Color.red));
 		}
 		cityPanel.invalidate();
 	}
