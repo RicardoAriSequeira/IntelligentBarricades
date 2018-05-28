@@ -34,8 +34,26 @@ public class City {
 	private void initialize() {
 		map = new Map( nX, nY);
 		Cars = new ArrayList<Car>();
-		Cars.add(new Car(new Point(10,16)));
+		Cars.add(new Car(new Point(22,6)));
+		Cars.add(new Car(new Point(23,9)));
+		Cars.add(new Car(new Point(16,8)));
+		Cars.add(new Car(new Point(31,10)));
+		Cars.add(new Car(new Point(28,4)));
+		Cars.add(new Car(new Point(1,29)));
+		Cars.add(new Car(new Point(9,27)));
+		Cars.add(new Car(new Point(11,21)));
+		Cars.add(new Car(new Point(17,25)));
+		Cars.add(new Car(new Point(14,29)));
+		Cars.add(new Car(new Point(23,23)));
+		Cars.add(new Car(new Point(29,25)));
+		Cars.add(new Car(new Point(3,9)));
+		Cars.add(new Car(new Point(8,5)));
+		Cars.add(new Car(new Point(9,11)));
+		Cars.add(new Car(new Point(5,16)));
 		Cars.add(new Car(new Point(20,16)));
+		Cars.add(new Car(new Point(8,17)));
+		Cars.add(new Car(new Point(17,17)));
+		Cars.add(new Police(new Point(30,16)));
 	}
 
 	

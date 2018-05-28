@@ -1,5 +1,6 @@
 package barricades;
 
+import java.awt.Font;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -13,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
@@ -49,21 +51,23 @@ public class GraphicalInterface extends JFrame {
 	}
 
 	public void displayCity(City city) {
-		for(int i=0; i<city.nX; i++){
-			for(int j=0; j<city.nY; j++){ 
-				JPanel p = ((JPanel)cityPanel.getComponent(i*city.nY+j));
-				p.setBackground(new Color(0,0,0));
-				p.setBorder(BorderFactory.createLineBorder(Color.white));
-			}
-		}
 
 		for(int i=0; i<city.nX; i++){
+
 			for(int j=0; j<city.nY; j++){
+
+				JPanel p = ((JPanel)cityPanel.getComponent(i*city.nY+j));
+
 				if (city.map.board[i][j].isRoad()){
-					JPanel p = ((JPanel)cityPanel.getComponent(i*city.nY+j));
-					p.setBackground(new Color(255,255,255));
+					p.setBackground(Color.white);
+					p.setBorder(BorderFactory.createLineBorder(Color.white));
+				} else {
+					p.setBackground(Color.black);
+					p.setBorder(BorderFactory.createLineBorder(Color.black));
 				}
+
 			}
+
 		}
 
 		cityPanel.invalidate();
@@ -72,7 +76,8 @@ public class GraphicalInterface extends JFrame {
 	public void removeCars(City city) {
 		for(Car car : city.Cars){
 			JPanel p = ((JPanel)cityPanel.getComponent(car.position.x+car.position.y*city.nX));
-			p.setBorder(BorderFactory.createLineBorder(Color.white));			
+			p.setBorder(BorderFactory.createLineBorder(Color.white));
+			p.setBackground(Color.white);		
 		}
 		cityPanel.invalidate();
 	}
@@ -80,7 +85,13 @@ public class GraphicalInterface extends JFrame {
 	public void displayCars(City city) {
 		for(Car car : city.Cars){
 			JPanel p = ((JPanel)cityPanel.getComponent(car.position.x+car.position.y*city.nX));
-			p.setBorder(BorderFactory.createLineBorder(Color.red,3));			
+			//p.setBorder(BorderFactory.createLineBorder(Color.red,3));
+			if (car instanceof Police) {
+				p.setBackground(Color.blue);
+				p.setBorder(BorderFactory.createLineBorder(Color.red));
+			} else {
+				p.setBackground(Color.gray);		
+			}
 		}
 		cityPanel.invalidate();
 	}
@@ -128,7 +139,7 @@ public class GraphicalInterface extends JFrame {
  				}
 			}
 		});
-		speed = new JTextField("20");
+		speed = new JTextField("40");
 		speed.setMargin(new Insets(5,5,5,5));
 		panel.add(speed);
 		

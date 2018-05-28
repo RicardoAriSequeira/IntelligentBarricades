@@ -101,9 +101,10 @@ public class Map {
 				setCellDirection(i, 29, SOUTH);
 			if (i>16 && i<32) {
 				setCellDirection(i, 5, SOUTH);
-				setCellDirection(i, 2, NORTH);
 				setCellDirection(i, 26, NORTH);
 			}
+			if (i>16 && i<21)
+				setCellDirection(i, 2, NORTH);
 			if (i>21 && i<26)
 				setCellDirection(i, 13, NORTH);
 			if (i>29 && i<32) {
