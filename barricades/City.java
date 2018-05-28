@@ -36,7 +36,7 @@ public class City {
 		map = new Map( nX, nY);
 		Cars = new ArrayList<Car>();
 		Polices = new ArrayList<Police>();
-		Cars.add(new Car(new Point(22,6)));
+		/*Cars.add(new Car(new Point(22,6)));
 		Cars.add(new Car(new Point(23,9)));
 		Cars.add(new Car(new Point(16,8)));
 		Cars.add(new Car(new Point(31,10)));
@@ -54,7 +54,7 @@ public class City {
 		Cars.add(new Car(new Point(5,16)));
 		Cars.add(new Car(new Point(20,16)));
 		Cars.add(new Car(new Point(8,17)));
-		Cars.add(new Car(new Point(17,17)));
+		Cars.add(new Car(new Point(17,17)));*/
 		Polices.add(new Police(new Point(30,16)));
 		Polices.add(new Police(new Point(3,21)));
 		Cars.add(new Thief(new Point(1,3)));
@@ -101,15 +101,18 @@ public class City {
 
 		int deletedCars = 0;
 		int deletedPolices = 0;
+		boolean deletedThief = false;
 
 		Iterator<Car> itr = Cars.iterator();
 		Iterator<Police> itrP = Polices.iterator();
 
 		while (itr.hasNext()) {
 			Car car = itr.next();
+
 			if (!car.inCity(map)) {
 				itr.remove();
-				deletedCars++;
+				if (car instanceof Thief) deletedThief = true;
+				else deletedCars++;
 			}
 		}
 		while (itrP.hasNext()) {
@@ -125,6 +128,7 @@ public class City {
 		for (int c = 0; c < deletedCars; c++)
 			insertCar();
 
+		if (deletedThief) insertThief();
 	}
 
 	public void insertCar() {
@@ -139,7 +143,13 @@ public class City {
 		Random generator = new Random();
 		Cell randomEntryCell = entryCells.get(generator.nextInt(entryCells.size()));
 		Polices.add(new Police(new Point(randomEntryCell.getCoordinates())));
-	}	
+	}
+	public void insertThief() {
+		List<Cell> entryCells = map.getEntryCells();
+		Random generator = new Random();
+		Cell randomEntryCell = entryCells.get(generator.nextInt(entryCells.size()));
+		Cars.add(new Thief(new Point(randomEntryCell.getCoordinates())));
+	}		
 
 	public void run(int time) {
 		runThread = new RunThread(time);
