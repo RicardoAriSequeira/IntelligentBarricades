@@ -2,6 +2,7 @@ package barricades;
 
 import java.awt.Point;
 import java.util.Random;
+import java.util.List;
 
 public class Car {
 
@@ -25,27 +26,21 @@ public class Car {
 
 		if (inCity(map)) {
 
-			boolean[] positionDirections = map.getCell(position.x,position.y).getDirections();
+			List<Integer> possibleDirections = map.getCell(position.x,position.y).getPossibleDirections();
 
 			if (!map.getCell(position.x, position.y).isRoad()) {
 				System.out.println("Error: no road in cell (" + position.y + "," + position.x + ")");
 				return;
 			}
 
-			if (positionDirections[0] == false &&
-				positionDirections[1] == false &&
-				positionDirections[2] == false &&
-				positionDirections[3] == false) {
+			if (possibleDirections.size() == 0) {
 				System.out.println("Error: there is no directions in cell (" + position.y + "," + position.x + ")");
 				return;
 			}
 
 			Random generator = new Random();
-			int direction = generator.nextInt(4);
-
-			while (positionDirections[direction] == false) {
-				direction = generator.nextInt(4);
-			}
+			int r = generator.nextInt(possibleDirections.size());
+			int direction = possibleDirections.get(r);
 
 			Point nextPosition = new Point(position);
 
