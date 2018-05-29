@@ -59,7 +59,7 @@ public class City {
 		insertCivil(new Point(17,17)));
 		*/
 		//insertCivil(new Point(19,16));
-		insertPolice(new Point(21,16));
+		//insertPolice(new Point(21,16));
 		//insertPolice(new Point(16,17));
 		insertThief(new Point(20,16));
 	}

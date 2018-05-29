@@ -10,44 +10,119 @@ public class Thief extends Car {
 		super(position);
 	}
 
-	public int directionDecision(Map map) {
-		Random generator = new Random(12345);
-		triedDirections = new boolean[possibleDirections.size()];
-		int r = generator.nextInt(possibleDirections.size());
-		triedDirections[r] = true;
-		return possibleDirections.get(r);
+	public int checkWantedDirections(Map map) {
+
+		Random generator = new Random();
+		int a = generator.nextInt(2);
+
+		boolean[] directions = map.getCell(position).getDirections();
+
+		if (directions[wantedDirections[a]] == true) {
+			if (possibleDirection(map,wantedDirections[a]))
+				return wantedDirections[a];
+			else
+				triedDirections[wantedDirections[a]] = true;
+		}
+
+		int b = a == 0 ? 1 : 0;
+
+		if (directions[wantedDirections[b]] == true) {
+			if (possibleDirection(map,wantedDirections[b]))
+				return wantedDirections[b];
+			else {
+				triedDirections[wantedDirections[b]] = true;
+				if (possibleDirection(map,wantedDirections[a]))
+					return wantedDirections[a];
+				else triedDirections[wantedDirections[a]] = true;
+			}
+		} else {
+			if (possibleDirection(map,wantedDirections[a]))
+				return wantedDirections[a];
+			else {
+				triedDirections[wantedDirections[a]] = true;
+				if (possibleDirection(map,wantedDirections[b]))
+					return wantedDirections[b];
+				else triedDirections[wantedDirections[b]] = true;
+			}
+		}
+
+		return STILL;
+
 	}
 
-	public void changePosition(Map map, int direction) {
 
-		Point nextPosition = new Point(position);
+	public int directionDecision(Map map) {
 
-		if (direction == NORTH) nextPosition.y--;
-		else if (direction == SOUTH) nextPosition.y++;
-		else if (direction == EAST) nextPosition.x++;
-		else if (direction == WEST) nextPosition.x--;
+		int direction;
 
-		while (!possiblePosition(map,nextPosition)){
+		triedDirections = new boolean[4];
 
-			direction = getOtherPossibleDirection();
+		if (this.directionToMantain != NOT_DEFINED) {
 
-			nextPosition = new Point(position);
+			direction = checkWantedDirections(map);
 
-			if (direction == -1) break;
-			else if (direction == NORTH) nextPosition.y--;
-			else if (direction == SOUTH) nextPosition.y++;
-			else if (direction == EAST) nextPosition.x++;
-			else if (direction == WEST) nextPosition.x--;
+			if (direction == STILL) {
+
+				if (possibleDirection(map,this.directionToMantain))
+					return this.directionToMantain;
+				else
+					triedDirections[this.directionToMantain] = true;
+
+				for (int d = 0; d < triedDirections.length; d++) {
+
+					if (triedDirections[d] == false) {
+
+						if (possibleDirection(map,d)) {
+							this.directionToMantain = d;
+							return d;
+
+						}
+					}
+				}
+
+			} else {
+
+				this.directionToMantain = NOT_DEFINED;
+				return direction;
+			}
 
 		}
 
+		Random generator = new Random();
+		int r = generator.nextInt(possibleDirections.size());
+		triedDirections[possibleDirections.get(r)] = true;
+		direction = possibleDirections.get(r);
 
-		if (direction != -1) {
-			map.getCell(position).setNoCar();
-			this.position = nextPosition;
-			map.getCell(position).setCar(this);
+		if (!possibleDirection(map,direction)) {
+
+			if (direction == NORTH || direction == SOUTH)
+				wantedDirections = new int[]{WEST, EAST};
+			else
+				wantedDirections = new int[]{NORTH, SOUTH};
+
+			direction = checkWantedDirections(map);
+
+			if (direction == STILL) {
+
+				for (int d = 0; d < triedDirections.length; d++) {
+
+					if (triedDirections[d] == false) {
+
+						if (possibleDirection(map,d)) {
+							this.directionToMantain = d;
+							return d;
+
+						}
+					}
+				}
+
+			} else return direction;
+
+			return STILL;
 
 		}
+
+		return direction;
 
 	}
 

@@ -6,6 +6,7 @@ import java.util.List;
 
 public abstract class Car {
 
+	public static final int NOT_DEFINED = -2;
 	public static final int STILL = -1;
 	public static final int NORTH = 0;
 	public static final int SOUTH = 1;
@@ -13,10 +14,14 @@ public abstract class Car {
 	public static final int WEST = 3;
 
 	public boolean[] triedDirections;
+	public int[] wantedDirections;
+	public int directionToMantain;
+
 	public Point position;
 	public List<Integer> possibleDirections;
 	
 	public Car(Point position){
+		this.directionToMantain = NOT_DEFINED;
 		this.position = position;
 	}
 
@@ -37,32 +42,47 @@ public abstract class Car {
 		return visionPoints;
 	}
 
-	protected boolean possiblePosition(Map map, Point position) {
-		if (map.inMap(position))
-			if (map.getCell(position).hasCar() == false)
+	protected boolean possibleDirection(Map map, int direction) {
+
+		Point nextPosition = new Point(position);
+
+		if (direction == NORTH) nextPosition.y--;
+		else if (direction == SOUTH) nextPosition.y++;
+		else if (direction == EAST) nextPosition.x++;
+		else if (direction == WEST) nextPosition.x--;
+
+		if (map.inMap(nextPosition))
+			if (map.getCell(nextPosition).isRoad() && map.getCell(nextPosition).hasCar() == false)
 				return true;
 		return false;
 	}
 
-	protected int getOtherPossibleDirection() {
-
-		for (int i = 0; i < triedDirections.length; i++) {
-
-			if (triedDirections[i]) {
-				continue;
-
-			} else {
-				triedDirections[i] = true;
-				return possibleDirections.get(i);
-			}
-		}
-
-		return -1;
-	}
-
 	public abstract int directionDecision(Map map);
 
-	public abstract void changePosition(Map map, int direction);
+	public void changePosition(Map map, int direction) {
+
+		Point nextPosition = new Point(position);
+
+		if (direction == NORTH) nextPosition.y--;
+		else if (direction == SOUTH) nextPosition.y++;
+		else if (direction == EAST) nextPosition.x++;
+		else if (direction == WEST) nextPosition.x--;
+		else return;
+
+		if (map.inMap(nextPosition)){
+
+			if (map.getCell(nextPosition).hasCar() == false) {
+				map.getCell(position).setNoCar();
+				this.position = nextPosition;
+				map.getCell(position).setCar(this);
+			}
+
+		} else {
+			map.getCell(position).setNoCar();
+			this.position = nextPosition;
+		}
+
+	}
 	
 	public void go(Map map){
 

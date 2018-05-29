@@ -105,28 +105,4 @@ public class Police extends Car {
 		}
 	}
 
-	public void changePosition(Map map, int direction) {
-
-		Point nextPosition = new Point(position);
-
-		if (direction == NORTH) nextPosition.y--;
-		else if (direction == SOUTH) nextPosition.y++;
-		else if (direction == EAST) nextPosition.x++;
-		else if (direction == WEST) nextPosition.x--;
-
-		if (map.inMap(nextPosition)){
-
-			if (map.getCell(nextPosition).hasCar() == false) {
-				map.getCell(position).setNoCar();
-				this.position = nextPosition;
-				map.getCell(position).setCar(this);
-			}
-
-		} else {
-			map.getCell(position).setNoCar();
-			this.position = nextPosition;
-		}
-
-	}
-
 }
