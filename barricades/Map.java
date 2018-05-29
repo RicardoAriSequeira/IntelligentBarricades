@@ -24,41 +24,35 @@ public class Map {
 		initialize();
 	}
 
-	public Cell getCell(int y, int x) {
-		if (inMap(x,y)) return board[x][y];
-		return null;
-	}
-
 	public Cell getCell(Point p) {
 		if (inMap(p)) return board[p.x][p.y];
 		return null;
 	}
 
-	public void setCellDirection(int x, int y, int direction) {
+	public void setCellDirection(Point p, int direction) {
 
-		board[x][y].setDirection(direction);
+		Cell c = getCell(p);
+		c.setDirection(direction);
 
-		if ((direction == NORTH && x == nX-1) ||
-			(direction == SOUTH && x == 0) ||
-			(direction == EAST && y == 0) ||
-			(direction == WEST && y == nY-1))
+		if ((direction == NORTH && p.y == nY-1) ||
+			(direction == SOUTH && p.y == 0) ||
+			(direction == EAST && p.x == 0) ||
+			(direction == WEST && p.x == nX-1))
 
-			entryCells.add(board[x][y]);
+			entryCells.add(c);
 
 	}
 
 	public List<Cell> getEntryCells() {return entryCells;}
 
-	public boolean inMap(int x, int y) {
-		if (x < nX && y < nY && x >= 0 && y >= 0) return true;
+	public boolean inMap(Point p) {
+		if (p.x < nX && p.y < nY && p.x >= 0 && p.y >= 0) return true;
 		return false;
 	}
 
-	public boolean inMap(Point p) {return inMap(p.x, p.y);}
+	public boolean isCellRoad(Point p) {
 
-	public boolean isCellRoad(int x, int y) {
-
-		Cell cell = getCell(x,y);
+		Cell cell = getCell(p);
 
 		if (cell != null) {
 			return cell.isRoad();
@@ -73,65 +67,75 @@ public class Map {
 		board = new Cell[nX][nY];
 		entryCells = new ArrayList<Cell>();
 
-		for(int i=0; i<nX; i++) {
-
-			for(int j=0; j<nY; j++) {
-
+		for(int i=0; i<nX; i++)
+			for(int j=0; j<nY; j++)
 				board[i][j] = new Cell(i,j);
 
-				if (i == (nX-1)) {
 
-					setCellDirection(3, j, EAST);
-					setCellDirection(16, j, WEST);
-					setCellDirection(17, j, EAST);
-					setCellDirection(21, j, EAST);
-					setCellDirection(25, j, WEST);
-					setCellDirection(29, j, EAST);
+		for(int i=0; i<nX; i++) {
 
-					if ((j<4) || (j>8 && j<14) || (j>18 && j<24) || (j>28 && j<32))
-						setCellDirection(10, j, WEST);
-					if (j>3 && j<9) {
-						setCellDirection(7, j, WEST);
-						setCellDirection(12, j, EAST);
-					}
-					if (j>13 && j<18) {
-						setCellDirection(8, j, WEST);
-						setCellDirection(13, j, EAST);
-					}
-					if (j>22 && j<29)
-						setCellDirection(12, j, WEST);
-				}
-			}
-
-			setCellDirection(i, 8, SOUTH);
-			setCellDirection(i, 9, NORTH);
-			setCellDirection(i, 22, SOUTH);
-			setCellDirection(i, 23, NORTH);
+			setCellDirection(new Point(8,i), SOUTH);
+			setCellDirection(new Point(9,i), NORTH);
+			setCellDirection(new Point(22,i), SOUTH);
+			setCellDirection(new Point(23,i), NORTH);
 
 			if (i<17) {
-				setCellDirection(i, 3, NORTH);
-				setCellDirection(i, 13, SOUTH);
-				setCellDirection(i, 28, SOUTH);
+				setCellDirection(new Point(3,i), NORTH);
+				setCellDirection(new Point(13,i), SOUTH);
+				setCellDirection(new Point(28,i), SOUTH);
 			}
 			if ((i<21) || (i>25 && i<30))
-				setCellDirection(i, 18, NORTH);
+				setCellDirection(new Point(18,i), NORTH);
 			if ((i>15 && i<25) || (i>28 && i<32))
-				setCellDirection(i, 29, SOUTH);
+				setCellDirection(new Point(29,i), SOUTH);
 			if (i>16 && i<32) {
-				setCellDirection(i, 5, SOUTH);
-				setCellDirection(i, 26, NORTH);
+				setCellDirection(new Point(5,i), SOUTH);
+				setCellDirection(new Point(26,i), NORTH);
 			}
 			if (i>16 && i<21)
-				setCellDirection(i, 2, NORTH);
+				setCellDirection(new Point(2,i), NORTH);
 			if (i>21 && i<26)
-				setCellDirection(i, 13, NORTH);
+				setCellDirection(new Point(13,i), NORTH);
 			if (i>29 && i<32) {
-				setCellDirection(i, 2, NORTH);
-				setCellDirection(i, 13, NORTH);
-				setCellDirection(i, 26, NORTH);
+				setCellDirection(new Point(2,i), NORTH);
+				setCellDirection(new Point(13,i), NORTH);
+				setCellDirection(new Point(26,i), NORTH);
 			}
+		}
+
+		for(int j=0; j<nY; j++) {
+
+			setCellDirection(new Point(j,3), EAST);
+			setCellDirection(new Point(j,16), WEST);
+			setCellDirection(new Point(j,17), EAST);
+			setCellDirection(new Point(j,21), EAST);
+			setCellDirection(new Point(j,25), WEST);
+			setCellDirection(new Point(j,29), EAST);
+
+			if ((j<4) || (j>8 && j<14) || (j>18 && j<24) || (j>28 && j<32))
+				setCellDirection(new Point(j,10), WEST);
+			if (j>3 && j<9) {
+				setCellDirection(new Point(j,7), WEST);
+				setCellDirection(new Point(j,12), EAST);
+			}
+			if (j>13 && j<18) {
+				setCellDirection(new Point(j,8), WEST);
+				setCellDirection(new Point(j,13), EAST);
+			}
+			if (j>22 && j<29)
+				setCellDirection(new Point(j,12), WEST);
 
 		}
+
+		new Barricade(getCell(new Point(8,16)));
+		new Barricade(getCell(new Point(8,17)));
+		new Barricade(getCell(new Point(9,16)));
+		new Barricade(getCell(new Point(9,17)));
+
+		new Barricade(getCell(new Point(22,16)));
+		new Barricade(getCell(new Point(22,17)));
+		new Barricade(getCell(new Point(23,16)));
+		new Barricade(getCell(new Point(23,17)));
 
 		/*
 

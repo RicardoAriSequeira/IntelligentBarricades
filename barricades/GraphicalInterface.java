@@ -52,15 +52,27 @@ public class GraphicalInterface extends JFrame {
 
 	public void displayCity(City city) {
 
+		int x, y;
+
 		for(int i=0; i<city.nX; i++){
 
 			for(int j=0; j<city.nY; j++){
 
-				JPanel p = ((JPanel)cityPanel.getComponent(i*city.nY+j));
+				x = city.map.board[i][j].getCoordinates().x;
+				y = city.map.board[i][j].getCoordinates().y;
+
+				JPanel p = ((JPanel)cityPanel.getComponent(x*city.nY+y));
 
 				if (city.map.board[i][j].isRoad()){
+
 					p.setBackground(Color.white);
-					p.setBorder(BorderFactory.createLineBorder(Color.white));
+
+					if (city.map.board[i][j].isBarricade())
+						p.setBorder(BorderFactory.createLineBorder(Color.red));
+
+					else
+						p.setBorder(BorderFactory.createLineBorder(Color.white));
+
 				} else {
 					p.setBackground(Color.black);
 					p.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -74,33 +86,41 @@ public class GraphicalInterface extends JFrame {
 	}
 	
 	public void removeCars(City city) {
-		for(Car car : city.Cars){
-			JPanel p = ((JPanel)cityPanel.getComponent(car.position.x+car.position.y*city.nX));
+
+		for(Civil civil : city.civils){
+			JPanel p = ((JPanel)cityPanel.getComponent(civil.position.x+civil.position.y*city.nX));
 			p.setBorder(BorderFactory.createLineBorder(Color.white));
 			p.setBackground(Color.white);		
 		}
-		for(Police police : city.Polices){
+
+		for(Police police : city.polices){
 			JPanel p = ((JPanel)cityPanel.getComponent(police.position.x+police.position.y*city.nX));
 			p.setBorder(BorderFactory.createLineBorder(Color.white));
 			p.setBackground(Color.white);		
 		}
+
+		JPanel p = ((JPanel)cityPanel.getComponent(city.thief.position.x+city.thief.position.y*city.nX));
+		p.setBorder(BorderFactory.createLineBorder(Color.white));
+		p.setBackground(Color.white);	
+
 		cityPanel.invalidate();
 	}
 
 	public void displayCars(City city) {
-		for(Car car : city.Cars){
-			JPanel p = ((JPanel)cityPanel.getComponent(car.position.x+car.position.y*city.nX));
-			if(car instanceof Thief){
-				p.setBackground(Color.red);
-			} else {
-				p.setBackground(Color.gray);		
-			}
+
+		for(Civil civil : city.civils){
+			JPanel p = ((JPanel)cityPanel.getComponent(civil.position.x+civil.position.y*city.nX));
+			p.setBackground(Color.gray);		
 		}
-		for(Police police : city.Polices){
+
+		for(Police police : city.polices){
 			JPanel p = ((JPanel)cityPanel.getComponent(police.position.x+police.position.y*city.nX));
-				p.setBackground(Color.blue);
-				p.setBorder(BorderFactory.createLineBorder(Color.red));
+			p.setBackground(Color.blue);
 		}
+
+		JPanel p = ((JPanel)cityPanel.getComponent(city.thief.position.x+city.thief.position.y*city.nX));
+		p.setBackground(Color.red);
+
 		cityPanel.invalidate();
 	}
 

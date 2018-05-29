@@ -12,11 +12,12 @@ public class Cell {
 	public static final int WEST = 3;
 
 	// North, South, East, West
+	private boolean isRoad, isBarricade;
 	private boolean[] directions;
-	private List<Integer> possibleDirections;
-	private Point coordinates;
-	private boolean isRoad;
+
 	private Car car;
+	private Point coordinates;
+	private List<Integer> possibleDirections;
 
 	public Cell(int x, int y){
 		coordinates = new Point(y,x);
@@ -30,6 +31,8 @@ public class Cell {
 
 	public boolean isRoad() {return isRoad;}
 
+	public boolean isBarricade() {return isBarricade;}
+
 	public boolean hasCar() {return !(this.car == null);}
 
 	public boolean[] getDirections() {return directions;}
@@ -38,9 +41,11 @@ public class Cell {
 
 	public Car getCar() {return car;}
 
-	public void setCar(Car car) {this.car = car;}
+	public void setIsBarricade() {this.isBarricade = true;}
 
 	public void setNoCar() {this.car = null;}
+
+	public void setCar(Car car) {this.car = car;}
 
 	public void setDirection(int direction) {
 

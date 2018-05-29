@@ -12,11 +12,12 @@ public abstract class Car {
 	public static final int EAST = 2;
 	public static final int WEST = 3;
 
+	public boolean[] triedDirections;
 	public Point position;
+	public List<Integer> possibleDirections;
 	
-	public Car(Map map, Point position){
+	public Car(Point position){
 		this.position = position;
-		map.getCell(position).setCar(this);
 	}
 
 	protected Point[] getVisionPoints() {
@@ -36,44 +37,45 @@ public abstract class Car {
 		return visionPoints;
 	}
 
-	protected abstract int directionDecision(Map map, List<Integer> possibleDirections);
+	protected boolean possiblePosition(Map map, Point position) {
+		if (map.inMap(position))
+			if (map.getCell(position).hasCar() == false)
+				return true;
+		return false;
+	}
 
-	private void changePosition(Map map, int direction) {
+	protected int getOtherPossibleDirection() {
 
-		Point nextPosition = new Point(position);
+		for (int i = 0; i < triedDirections.length; i++) {
 
-		if (direction == NORTH) nextPosition.y--;
-		else if (direction == SOUTH) nextPosition.y++;
-		else if (direction == EAST) nextPosition.x++;
-		else if (direction == WEST) nextPosition.x--;
+			if (triedDirections[i]) {
+				continue;
 
-		if (map.inMap(nextPosition)){
-
-			if (map.getCell(nextPosition).hasCar() == false) {
-				map.getCell(position).setNoCar();
-				this.position = nextPosition;
-				map.getCell(position).setCar(this);
+			} else {
+				triedDirections[i] = true;
+				return possibleDirections.get(i);
 			}
-
-		} else {
-			map.getCell(position).setNoCar();
-			this.position = nextPosition;
 		}
 
+		return -1;
 	}
+
+	public abstract int directionDecision(Map map);
+
+	public abstract void changePosition(Map map, int direction);
 	
 	public void go(Map map){
 
 		if (map.inMap(this.position)) {
 
-			List<Integer> possibleDirections = map.getCell(position.x,position.y).getPossibleDirections();
+			possibleDirections = map.getCell(position).getPossibleDirections();
 
 			if (possibleDirections.size() == 0) {
-				System.out.println("Error: there is no directions in cell (" + position.y + "," + position.x + ")");
+				System.out.println("Error: there is no directions in cell (" + position.x + "," + position.y + ")");
 				return;
 			}
 
-			int direction = directionDecision(map, possibleDirections);
+			int direction = directionDecision(map);
 			changePosition(map, direction);
 
 		}

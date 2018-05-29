@@ -18,49 +18,50 @@ public class City {
 	public static final int EAST = 2;
 	public static final int WEST = 3;
 
-	/** A: Environment */
-
-	public List<Car> Cars;
-	public List<Police> Polices;
-	public Map map;
-	public GraphicalInterface GUI;
 	public int nX, nY;
+	public GraphicalInterface GUI;
+	public List<Civil> civils;
+	public List<Police> polices;
+	public Thief thief;
+	public Map map;
 	
-	public City( int nX, int nY) {
+	public City(int nX, int nY) {
 		this.nX = nX;
 		this.nY = nY;
 		initialize();
 	}
 
 	private void initialize() {
-		map = new Map( nX, nY);
-		Cars = new ArrayList<Car>();
-		Polices = new ArrayList<Police>();
-		/*Cars.add(new Car(new Point(22,6)));
-		Cars.add(new Car(new Point(23,9)));
-		Cars.add(new Car(new Point(16,8)));
-		Cars.add(new Car(new Point(31,10)));
-		Cars.add(new Car(new Point(28,4)));
-		Cars.add(new Car(new Point(1,29)));
-		Cars.add(new Car(new Point(9,27)));
-		Cars.add(new Car(new Point(11,21)));
-		Cars.add(new Car(new Point(17,25)));
-		Cars.add(new Car(new Point(14,29)));
-		Cars.add(new Car(new Point(23,23)));
-		Cars.add(new Car(new Point(29,25)));
-		Cars.add(new Car(new Point(3,9)));
-		Cars.add(new Car(new Point(8,5)));
-		Cars.add(new Car(new Point(9,11)));
-		Cars.add(new Car(new Point(5,16)));
-		Cars.add(new Car(new Point(20,16)));
-		Cars.add(new Car(new Point(8,17)));
-		Cars.add(new Car(new Point(17,17)));*/
-		Polices.add(new Police(map,new Point(21,16)));
-		//map.getCell(new Point(23,16)).setCar(Polices.get(0));
-		//Polices.add(new Police(new Point(16,17)));
-		//map.getCell(new Point(16,17)).setCar(Polices.get(1));
-		Cars.add(new Thief(map,new Point(20,16)));
-		//map.getCell(new Point(20,16)).setCar(Cars.get(0));
+
+		this.map = new Map(this.nX, this.nY);
+		this.civils = new ArrayList<Civil>();
+		this.polices = new ArrayList<Police>();
+
+		/*
+		insertCivil(new Point(22,6)));
+		insertCivil(new Point(23,9)));
+		insertCivil(new Point(16,8)));
+		insertCivil(new Point(31,10)));
+		insertCivil(new Point(28,4)));
+		insertCivil(new Point(1,29)));
+		insertCivil(new Point(9,27)));
+		insertCivil(new Point(11,21)));
+		insertCivil(new Point(17,25)));
+		insertCivil(new Point(14,29)));
+		insertCivil(new Point(23,23)));
+		insertCivil(new Point(29,25)));
+		insertCivil(new Point(3,9)));
+		insertCivil(new Point(8,5)));
+		insertCivil(new Point(9,11)));
+		insertCivil(new Point(5,16)));
+		insertCivil(new Point(20,16)));
+		insertCivil(new Point(8,17)));
+		insertCivil(new Point(17,17)));
+		*/
+		//insertCivil(new Point(19,16));
+		insertPolice(new Point(21,16));
+		//insertPolice(new Point(16,17));
+		insertThief(new Point(20,16));
 	}
 
 	
@@ -87,8 +88,9 @@ public class City {
 	    	while(running){
 
 		    	removeCars();
-				for(Car a : Cars) a.go(map);
-				for(Police p: Polices) p.go(map);
+		    	thief.go(map);
+				//for(Civil c : civils) c.go(map);
+				for(Police p: polices) p.go(map);
 				substituteCars();
 				displayCars();
 				try {
@@ -102,22 +104,21 @@ public class City {
 
 	public void substituteCars() {
 
-		int deletedCars = 0;
+		int deletedCivils = 0;
 		int deletedPolices = 0;
 		boolean deletedThief = false;
 
-		Iterator<Car> itr = Cars.iterator();
-		Iterator<Police> itrP = Polices.iterator();
+		Iterator<Civil> itr = civils.iterator();
+		Iterator<Police> itrP = polices.iterator();
 
 		while (itr.hasNext()) {
-			Car car = itr.next();
-
-			if (!map.inMap(car.position)) {
+			Civil civil = itr.next();
+			if (!map.inMap(civil.position)) {
 				itr.remove();
-				if (car instanceof Thief) deletedThief = true;
-				else deletedCars++;
+				deletedCivils++;
 			}
 		}
+
 		while (itrP.hasNext()) {
 			Police police = itrP.next();
 			if (!map.inMap(police.position)) {
@@ -125,34 +126,43 @@ public class City {
 				deletedPolices++;
 			}
 		}
-		for (int p = 0; p < deletedPolices; p++)
-			insertPolice();
 
-		for (int c = 0; c < deletedCars; c++)
-			insertCar();
+		List<Cell> entryCells = map.getEntryCells();
+		Random generator = new Random(12345);
+		Cell randomEntryCell;
 
-		if (deletedThief) insertThief();
+		for (int p = 0; p < deletedPolices; p++) {
+			randomEntryCell = entryCells.get(generator.nextInt(entryCells.size()));
+			insertPolice(new Point(randomEntryCell.getCoordinates()));
+		}
+
+		for (int c = 0; c < deletedCivils; c++) {
+			randomEntryCell = entryCells.get(generator.nextInt(entryCells.size()));
+			insertCivil(new Point(randomEntryCell.getCoordinates()));
+		}
+
+		if (!map.inMap(this.thief.position)){
+			randomEntryCell = entryCells.get(generator.nextInt(entryCells.size()));
+			insertThief(new Point(randomEntryCell.getCoordinates()));
+		}
 	}
 
-	public void insertCar() {
-		List<Cell> entryCells = map.getEntryCells();
-		Random generator = new Random();
-		Cell randomEntryCell = entryCells.get(generator.nextInt(entryCells.size()));
-		Cars.add(new Civil(map,new Point(randomEntryCell.getCoordinates())));
+	public void insertCivil(Point p) {
+		Civil civil = new Civil(p);
+		this.civils.add(civil);
+		this.map.getCell(p).setCar(civil);
 	}
 
-	public void insertPolice() {
-		List<Cell> entryCells = map.getEntryCells();
-		Random generator = new Random();
-		Cell randomEntryCell = entryCells.get(generator.nextInt(entryCells.size()));
-		Polices.add(new Police(map,new Point(randomEntryCell.getCoordinates())));
+	public void insertThief(Point p) {
+		this.thief = new Thief(p);
+		this.map.getCell(p).setCar(this.thief);
 	}
-	public void insertThief() {
-		List<Cell> entryCells = map.getEntryCells();
-		Random generator = new Random();
-		Cell randomEntryCell = entryCells.get(generator.nextInt(entryCells.size()));
-		Cars.add(new Thief(map,new Point(randomEntryCell.getCoordinates())));
-	}		
+
+	public void insertPolice(Point p) {
+		Police police = new Police(p);
+		this.polices.add(police);
+		this.map.getCell(p).setCar(police);
+	}
 
 	public void run(int time) {
 		runThread = new RunThread(time);
@@ -168,7 +178,9 @@ public class City {
 
 	public void step() {
 		removeCars();
-		for(Car a : Cars) a.go(map);
+		this.thief.go(map);
+		for(Civil c : civils) c.go(map);
+		for(Police p : polices) p.go(map);
 		displayCars();
 	}
 
