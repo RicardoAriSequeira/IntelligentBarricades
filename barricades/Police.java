@@ -108,14 +108,14 @@ public class Police extends Car {
 
 	public int directionDecision() {
 
+		Point thiefPosition = thiefAround();
+
 		if (station.isThiefPositionKnown()) {
 
-			System.out.println("vou atras do ladrao");
+			System.out.println("Helping in the pursuit!");
 
 			return pursuitThief(station.getThiefPosition());
 		}
-
-		Point thiefPosition = thiefAround();
 
 		if (thiefPosition != null) {
 

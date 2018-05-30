@@ -8,10 +8,12 @@ public class PoliceStation {
 	private List<Police> polices;
 	private Point thiefPosition;
 	private boolean thiefPositionUpdated;
+	private boolean oneStepPassed;
 
 	public PoliceStation() {
 		this.thiefPosition = null;
 		this.thiefPositionUpdated = false;
+		this.oneStepPassed = false;
 	}
 
 	public void updatePolices(List<Police> polices) {
@@ -19,6 +21,7 @@ public class PoliceStation {
 	}
 
 	public void reportThiefPosition(Point p) {
+		this.oneStepPassed = false;
 		this.thiefPositionUpdated = true;
 		this.thiefPosition = p;
 	}
@@ -32,7 +35,10 @@ public class PoliceStation {
 	}
 
 	public void update() {
-		this.thiefPositionUpdated = false;
+		if (this.oneStepPassed)
+			this.thiefPositionUpdated = false;
+		else
+			this.oneStepPassed = true;
 	}
 
 }
