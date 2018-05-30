@@ -20,7 +20,7 @@ public class Cell {
 	private List<Integer> possibleDirections;
 
 	public Cell(int x, int y){
-		coordinates = new Point(y,x);
+		coordinates = new Point(x,y);
 		isRoad = false;
 		car = null;
 		directions = new boolean[4];

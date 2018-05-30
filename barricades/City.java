@@ -7,10 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Environment
- * @author Rui Henriques
- */
 public class City {
 
 	public static final int NORTH = 0;
@@ -59,8 +55,8 @@ public class City {
 		insertCivil(new Point(17,17)));
 		*/
 		//insertCivil(new Point(19,16));
-		//insertPolice(new Point(21,16));
-		//insertPolice(new Point(16,17));
+		insertPolice(new Point(8,8));
+		insertPolice(new Point(25,25));
 		insertThief(new Point(20,16));
 	}
 
@@ -86,7 +82,7 @@ public class City {
 	    public void run() {
 
 	    	while(running){
-
+	    		updateClock();
 		    	removeCars();
 		    	thief.go(map);
 				//for(Civil c : civils) c.go(map);
@@ -200,5 +196,9 @@ public class City {
 	
 	public void removeCars(){
 		GUI.removeCars(this);
+	}
+
+	public void updateClock(){
+		GUI.updateClock();
 	}
 }

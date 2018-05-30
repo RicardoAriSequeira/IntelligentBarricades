@@ -19,10 +19,6 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 
-/**
- * Graphical interface
- * @author Rui Henriques
- */
 public class GraphicalInterface extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -30,6 +26,9 @@ public class GraphicalInterface extends JFrame {
 	static JTextField speed;
 	static JPanel cityPanel;
 	static JButton run, reset, step;
+	static JLabel time;
+
+	public long startTime;
 	
 	public GraphicalInterface(City city) {
 		setTitle("Barricades");		
@@ -58,8 +57,8 @@ public class GraphicalInterface extends JFrame {
 
 			for(int j=0; j<city.nY; j++){
 
-				x = city.map.board[i][j].getCoordinates().x;
-				y = city.map.board[i][j].getCoordinates().y;
+				x = city.map.board[i][j].getCoordinates().y;
+				y = city.map.board[i][j].getCoordinates().x;
 
 				JPanel p = ((JPanel)cityPanel.getComponent(x*city.nY+y));
 
@@ -89,19 +88,29 @@ public class GraphicalInterface extends JFrame {
 
 		for(Civil civil : city.civils){
 			JPanel p = ((JPanel)cityPanel.getComponent(civil.position.x+civil.position.y*city.nX));
-			p.setBorder(BorderFactory.createLineBorder(Color.white));
-			p.setBackground(Color.white);		
+			p.setBackground(Color.white);
+			if (city.map.getCell(civil.position).isBarricade())
+				p.setBorder(BorderFactory.createLineBorder(Color.red));
+			else
+				p.setBorder(BorderFactory.createLineBorder(Color.white));
+
 		}
 
 		for(Police police : city.polices){
 			JPanel p = ((JPanel)cityPanel.getComponent(police.position.x+police.position.y*city.nX));
-			p.setBorder(BorderFactory.createLineBorder(Color.white));
-			p.setBackground(Color.white);		
+			p.setBackground(Color.white);
+			if (city.map.getCell(police.position).isBarricade())
+				p.setBorder(BorderFactory.createLineBorder(Color.red));
+			else
+				p.setBorder(BorderFactory.createLineBorder(Color.white));	
 		}
 
 		JPanel p = ((JPanel)cityPanel.getComponent(city.thief.position.x+city.thief.position.y*city.nX));
-		p.setBorder(BorderFactory.createLineBorder(Color.white));
-		p.setBackground(Color.white);	
+		p.setBackground(Color.white);
+		if (city.map.getCell(city.thief.position).isBarricade())
+				p.setBorder(BorderFactory.createLineBorder(Color.red));
+			else
+				p.setBorder(BorderFactory.createLineBorder(Color.white));		
 
 		cityPanel.invalidate();
 	}
@@ -124,7 +133,13 @@ public class GraphicalInterface extends JFrame {
 		cityPanel.invalidate();
 	}
 
+	public void updateClock() {
+		long end = System.currentTimeMillis();
+		time.setText(((end - startTime) / 1000) +"s");
+	}
+
 	private Component createButtonPanel(City city) {
+
 		JPanel panel = new JPanel();
 		panel.setSize(new Dimension(600,50));
 		panel.setLocation(new Point(0,0));
@@ -158,6 +173,7 @@ public class GraphicalInterface extends JFrame {
 						JOptionPane.showMessageDialog(null, output, "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 					if(time>0){
+						startTime = System.currentTimeMillis();
 						city.run(time);
 	 					run.setText("Stop");						
 					}
@@ -170,6 +186,9 @@ public class GraphicalInterface extends JFrame {
 		speed = new JTextField("40");
 		speed.setMargin(new Insets(5,5,5,5));
 		panel.add(speed);
+
+		time = new JLabel(0 + "s");
+		panel.add(time);
 		
 		return panel;
 	}

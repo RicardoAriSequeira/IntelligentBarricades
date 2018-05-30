@@ -57,6 +57,46 @@ public abstract class Car {
 		return false;
 	}
 
+	public int checkWantedDirections(Map map) {
+
+		Random generator = new Random();
+		int a = generator.nextInt(2);
+
+		boolean[] directions = map.getCell(position).getDirections();
+
+		if (directions[wantedDirections[a]] == true) {
+			if (possibleDirection(map,wantedDirections[a]))
+				return wantedDirections[a];
+			else
+				triedDirections[wantedDirections[a]] = true;
+		}
+
+		int b = a == 0 ? 1 : 0;
+
+		if (directions[wantedDirections[b]] == true) {
+			if (possibleDirection(map,wantedDirections[b]))
+				return wantedDirections[b];
+			else {
+				triedDirections[wantedDirections[b]] = true;
+				if (possibleDirection(map,wantedDirections[a]))
+					return wantedDirections[a];
+				else triedDirections[wantedDirections[a]] = true;
+			}
+		} else {
+			if (possibleDirection(map,wantedDirections[a]))
+				return wantedDirections[a];
+			else {
+				triedDirections[wantedDirections[a]] = true;
+				if (possibleDirection(map,wantedDirections[b]))
+					return wantedDirections[b];
+				else triedDirections[wantedDirections[b]] = true;
+			}
+		}
+
+		return STILL;
+
+	}
+
 	public abstract int directionDecision(Map map);
 
 	public void changePosition(Map map, int direction) {
@@ -100,11 +140,5 @@ public abstract class Car {
 
 		}
 	}
-	
-	/** A: actuators */
-
-	/** B: perceptors */
-
-	/** C: decision process */
 
 }

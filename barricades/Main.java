@@ -2,10 +2,6 @@ package barricades;
 
 import java.awt.EventQueue;
 
-/**
- * Multi-agent system creation
- * @author Rui Henriques
- */
 public class Main {
 
 	public static void main(String[] args) {
