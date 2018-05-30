@@ -47,15 +47,16 @@ public class Police extends Car {
 
 			System.out.println("Helping in the pursuit!");
 
-			return goToObjectivePoint(station.getThiefPosition());
+			return goToPoint(station.getThiefPosition());
 		}
 
 		if (thiefPosition != null) {
 
-			return goToObjectivePoint(thiefPosition);
+			return goToPoint(thiefPosition);
 
 		} else {
 			Random generator = new Random(12345);
+			List<Integer> possibleDirections = map.getCell(position).getPossibleDirections();
 			int r = generator.nextInt(possibleDirections.size());
 			return possibleDirections.get(r);
 		}

@@ -6,12 +6,6 @@ import java.util.ArrayList;
 
 public class Cell {
 
-	public static final int NORTH = 0;
-	public static final int SOUTH = 1;
-	public static final int EAST = 2;
-	public static final int WEST = 3;
-
-	// North, South, East, West
 	private boolean isRoad, isBarricade, isGarage;
 	private boolean[] directions;
 
