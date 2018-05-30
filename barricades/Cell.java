@@ -12,7 +12,7 @@ public class Cell {
 	public static final int WEST = 3;
 
 	// North, South, East, West
-	private boolean isRoad, isBarricade;
+	private boolean isRoad, isBarricade, isGarage;
 	private boolean[] directions;
 
 	private Car car;
@@ -33,6 +33,8 @@ public class Cell {
 
 	public boolean isBarricade() {return isBarricade;}
 
+	public boolean isGarage() {return isGarage;}
+
 	public boolean hasCar() {return !(this.car == null);}
 
 	public boolean[] getDirections() {return directions;}
@@ -42,6 +44,8 @@ public class Cell {
 	public Car getCar() {return car;}
 
 	public void setIsBarricade() {this.isBarricade = true;}
+
+	public void setIsGarage() {this.isGarage = true;}
 
 	public void setNoCar() {this.car = null;}
 

@@ -71,7 +71,8 @@ public class Map {
 			for(int j=0; j<nY; j++)
 				board[i][j] = new Cell(i,j);
 
-
+		Cell c = getCell(new Point(16, 2));
+		c.setIsGarage();
 		for(int i=0; i<nX; i++) {
 
 			setCellDirection(new Point(8,i), SOUTH);
@@ -126,7 +127,7 @@ public class Map {
 				setCellDirection(new Point(j,12), WEST);
 
 		}
-
+		//barricada 2/4
 		new Barricade(getCell(new Point(8,16)));
 		new Barricade(getCell(new Point(8,17)));
 		new Barricade(getCell(new Point(9,16)));
@@ -137,19 +138,45 @@ public class Map {
 		new Barricade(getCell(new Point(23,16)));
 		new Barricade(getCell(new Point(23,17)));
 
+		//barricada 1/2
+		new Barricade(getCell(new Point(8,3)));
+		new Barricade(getCell(new Point(9,3)));
+
+		new Barricade(getCell(new Point(8,21)));
+		new Barricade(getCell(new Point(9,21)));
+
+		new Barricade(getCell(new Point(8,25)));
+		new Barricade(getCell(new Point(9,25)));
+
+		new Barricade(getCell(new Point(8,29)));
+		new Barricade(getCell(new Point(9,29)));
+
+
+		new Barricade(getCell(new Point(22,3)));
+		new Barricade(getCell(new Point(23,3)));
+
+		new Barricade(getCell(new Point(22,10)));
+		new Barricade(getCell(new Point(23,12)));
+		
+		new Barricade(getCell(new Point(22,21)));
+		new Barricade(getCell(new Point(23,21)));
+
+		new Barricade(getCell(new Point(22,25)));
+		new Barricade(getCell(new Point(23,25)));
+
+		new Barricade(getCell(new Point(22,29)));
+		new Barricade(getCell(new Point(23,29)));
+
+
+		//barricada 1
 		new Barricade(getCell(new Point(3,3)));
 		new Barricade(getCell(new Point(3,7)));
 		new Barricade(getCell(new Point(3,10)));
 		new Barricade(getCell(new Point(3,12)));
-		
-		new Barricade(getCell(new Point(8,3)));
-		new Barricade(getCell(new Point(9,3)));
-		new Barricade(getCell(new Point(8,21)));
-		new Barricade(getCell(new Point(9,21)));
-		new Barricade(getCell(new Point(8,25)));
-		new Barricade(getCell(new Point(9,25)));
-		new Barricade(getCell(new Point(8,29)));
-		new Barricade(getCell(new Point(9,29)));
+
+		new Barricade(getCell(new Point(8,7)));
+		new Barricade(getCell(new Point(9,10)));
+		new Barricade(getCell(new Point(8,12)));
 
 		new Barricade(getCell(new Point(13,3)));
 		new Barricade(getCell(new Point(13,8)));
@@ -161,25 +188,9 @@ public class Map {
 		new Barricade(getCell(new Point(18,10)));
 		new Barricade(getCell(new Point(18,13)));
 
-		new Barricade(getCell(new Point(22,3)));
-		new Barricade(getCell(new Point(23,3)));
-
 		new Barricade(getCell(new Point(28,3)));
 		new Barricade(getCell(new Point(28,10)));
 		new Barricade(getCell(new Point(28,12)));
-
-		new Barricade(getCell(new Point(8,7)));
-		new Barricade(getCell(new Point(9,10)));
-		new Barricade(getCell(new Point(8,12)));
-
-		new Barricade(getCell(new Point(22,10)));
-		new Barricade(getCell(new Point(23,12)));
-		new Barricade(getCell(new Point(22,21)));
-		new Barricade(getCell(new Point(23,21)));
-		new Barricade(getCell(new Point(22,25)));
-		new Barricade(getCell(new Point(23,25)));
-		new Barricade(getCell(new Point(22,29)));
-		new Barricade(getCell(new Point(23,29)));
 
 		new Barricade(getCell(new Point(3,16)));
 		new Barricade(getCell(new Point(2,17)));
@@ -203,11 +214,11 @@ public class Map {
 		new Barricade(getCell(new Point(18,29)));
 		new Barricade(getCell(new Point(29,29)));
 		
-
 		new Barricade(getCell(new Point(13,16)));
 		new Barricade(getCell(new Point(18,16)));
 		new Barricade(getCell(new Point(18,17)));
 		new Barricade(getCell(new Point(26,17)));
+
 		new Barricade(getCell(new Point(26,21)));
 		new Barricade(getCell(new Point(26,25)));
 		new Barricade(getCell(new Point(26,29)));

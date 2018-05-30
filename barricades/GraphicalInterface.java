@@ -77,6 +77,8 @@ public class GraphicalInterface extends JFrame {
 					p.setBackground(Color.black);
 					p.setBorder(BorderFactory.createLineBorder(Color.black));
 				}
+				if (city.map.board[i][j].isGarage())
+					p.setBackground(Color.yellow);
 
 			}
 
