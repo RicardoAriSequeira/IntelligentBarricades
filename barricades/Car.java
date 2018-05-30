@@ -108,6 +108,72 @@ public abstract class Car {
 
 	}
 
+	public int goToObjectivePoint(Point point) {
+
+		Random generator = new Random(12345);
+		int r = generator.nextInt(2);
+
+		if (point.x < this.position.x) {
+
+			if (point.y > this.position.y) {
+
+				if (!possibleDirection(WEST) && possibleDirection(SOUTH)) return SOUTH;
+
+				if (!possibleDirection(SOUTH) && possibleDirection(WEST)) return WEST;
+
+				if (r == 0 && possibleDirection(SOUTH)) return SOUTH;
+				else if (possibleDirection(WEST)) return WEST;
+				return STILL;
+
+			} else if (point.y < this.position.y) {
+
+				if (!possibleDirection(WEST) && possibleDirection(NORTH)) return NORTH;
+
+				if (!possibleDirection(NORTH) && possibleDirection(WEST)) return WEST;
+
+				if (r == 0 && possibleDirection(NORTH)) return NORTH;
+				else if (possibleDirection(WEST)) return WEST;
+				return STILL;
+
+			}  else if (possibleDirection(WEST)) return WEST;
+			else return STILL;
+
+
+		} else if (point.x > this.position.x) {
+
+			if (point.y > this.position.y) {
+
+				if (!possibleDirection(EAST) && possibleDirection(SOUTH)) return SOUTH;
+
+				if (!possibleDirection(SOUTH) && possibleDirection(EAST)) return EAST;
+
+				if (r == 0 && possibleDirection(SOUTH)) return SOUTH;
+				else if (possibleDirection(EAST)) return EAST;
+				return STILL;
+
+			} else if (point.y < this.position.y) {
+
+				if (!possibleDirection(EAST) && possibleDirection(NORTH)) return NORTH;
+
+				if (!possibleDirection(NORTH) && possibleDirection(EAST)) return EAST;
+
+				if (r == 0 && possibleDirection(NORTH)) return NORTH;
+				else if (possibleDirection(EAST)) return EAST;
+				return STILL;
+				
+			} else if (possibleDirection(EAST)) return EAST;
+			else return STILL;
+
+		} else {
+
+			if (point.y > this.position.y && possibleDirection(SOUTH)) return SOUTH;
+			else if (point.y < this.position.y && possibleDirection(NORTH)) return NORTH;
+			return STILL;
+
+		}
+
+	}
+
 	public abstract int directionDecision();
 
 	public void changePosition(int direction) {

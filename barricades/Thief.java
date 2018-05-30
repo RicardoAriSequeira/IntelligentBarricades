@@ -10,7 +10,36 @@ public class Thief extends Car {
 		super(map,position);
 	}
 
+	private Point garageAround() {
+
+		Cell cell;
+		Point[] visionPoints = getVisionPoints();
+
+		for (Point point : visionPoints) {
+
+			cell = map.getCell(point);
+
+			if (cell != null) {
+
+				if (cell.isGarage()) {
+
+					System.out.println("Garage found in cell " + point.x + "," + point.y);
+					return point;
+				}
+			}
+
+		}
+
+		return null;
+
+	}
+
 	public int directionDecision() {
+
+		Point garage = garageAround();
+
+		if (garage != null)
+			return goToObjectivePoint(garage);
 
 		int direction;
 
