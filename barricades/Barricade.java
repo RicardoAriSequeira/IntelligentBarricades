@@ -1,9 +1,5 @@
 package barricades;
 
-import java.awt.Point;
-import java.util.Random;
-import java.util.List;
-
 public class Barricade {
 
 	private Cell[] cells;

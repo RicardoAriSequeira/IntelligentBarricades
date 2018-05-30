@@ -19,30 +19,41 @@ public abstract class Car {
 
 	public Point position;
 	public List<Integer> possibleDirections;
+	public Map map;
 	
-	public Car(Point position){
+	public Car(Map map, Point position){
+		this.map = map;
 		this.directionToMantain = NOT_DEFINED;
 		this.position = position;
+		this.map.getCell(position).setCar(this);
 	}
 
 	protected Point[] getVisionPoints() {
-		Point[] visionPoints = new Point[12];
-		visionPoints[0] = new Point(position.x+2, position.y);
-		visionPoints[1] = new Point(position.x+1, position.y);
-		visionPoints[2] = new Point(position.x-1, position.y);
-		visionPoints[3] = new Point(position.x-2, position.y);
-		visionPoints[4] = new Point(position.x, position.y+2);
-		visionPoints[5] = new Point(position.x, position.y+1);
-		visionPoints[6] = new Point(position.x, position.y-1);
-		visionPoints[7] = new Point(position.x, position.y-2);
-		visionPoints[8] = new Point(position.x+1, position.y+1);
-		visionPoints[9] = new Point(position.x+1, position.y-1);
-		visionPoints[10] = new Point(position.x-1, position.y+1);
-		visionPoints[11] = new Point(position.x-1, position.y-1);
+		Point[] visionPoints = new Point[20];
+		visionPoints[0] = new Point(position.x+4, position.y);
+		visionPoints[1] = new Point(position.x+3, position.y);
+		visionPoints[2] = new Point(position.x+2, position.y);
+		visionPoints[3] = new Point(position.x+1, position.y);
+		visionPoints[4] = new Point(position.x-1, position.y);
+		visionPoints[5] = new Point(position.x-2, position.y);
+		visionPoints[6] = new Point(position.x-3, position.y);
+		visionPoints[7] = new Point(position.x-4, position.y);
+		visionPoints[8] = new Point(position.x, position.y+4);
+		visionPoints[9] = new Point(position.x, position.y+3);
+		visionPoints[10] = new Point(position.x, position.y+2);
+		visionPoints[11] = new Point(position.x, position.y+1);
+		visionPoints[12] = new Point(position.x, position.y-1);
+		visionPoints[13] = new Point(position.x, position.y-2);
+		visionPoints[14] = new Point(position.x, position.y-3);
+		visionPoints[15] = new Point(position.x, position.y-4);
+		visionPoints[16] = new Point(position.x+1, position.y+1);
+		visionPoints[17] = new Point(position.x+1, position.y-1);
+		visionPoints[18] = new Point(position.x-1, position.y+1);
+		visionPoints[19] = new Point(position.x-1, position.y-1);
 		return visionPoints;
 	}
 
-	protected boolean possibleDirection(Map map, int direction) {
+	protected boolean possibleDirection(int direction) {
 
 		Point nextPosition = new Point(position);
 
@@ -57,7 +68,7 @@ public abstract class Car {
 		return false;
 	}
 
-	public int checkWantedDirections(Map map) {
+	public int checkWantedDirections() {
 
 		Random generator = new Random();
 		int a = generator.nextInt(2);
@@ -65,7 +76,7 @@ public abstract class Car {
 		boolean[] directions = map.getCell(position).getDirections();
 
 		if (directions[wantedDirections[a]] == true) {
-			if (possibleDirection(map,wantedDirections[a]))
+			if (possibleDirection(wantedDirections[a]))
 				return wantedDirections[a];
 			else
 				triedDirections[wantedDirections[a]] = true;
@@ -74,20 +85,20 @@ public abstract class Car {
 		int b = a == 0 ? 1 : 0;
 
 		if (directions[wantedDirections[b]] == true) {
-			if (possibleDirection(map,wantedDirections[b]))
+			if (possibleDirection(wantedDirections[b]))
 				return wantedDirections[b];
 			else {
 				triedDirections[wantedDirections[b]] = true;
-				if (possibleDirection(map,wantedDirections[a]))
+				if (possibleDirection(wantedDirections[a]))
 					return wantedDirections[a];
 				else triedDirections[wantedDirections[a]] = true;
 			}
 		} else {
-			if (possibleDirection(map,wantedDirections[a]))
+			if (possibleDirection(wantedDirections[a]))
 				return wantedDirections[a];
 			else {
 				triedDirections[wantedDirections[a]] = true;
-				if (possibleDirection(map,wantedDirections[b]))
+				if (possibleDirection(wantedDirections[b]))
 					return wantedDirections[b];
 				else triedDirections[wantedDirections[b]] = true;
 			}
@@ -97,9 +108,9 @@ public abstract class Car {
 
 	}
 
-	public abstract int directionDecision(Map map);
+	public abstract int directionDecision();
 
-	public void changePosition(Map map, int direction) {
+	public void changePosition(int direction) {
 
 		Point nextPosition = new Point(position);
 
@@ -124,7 +135,7 @@ public abstract class Car {
 
 	}
 	
-	public void go(Map map){
+	public void go(){
 
 		if (map.inMap(this.position)) {
 
@@ -135,8 +146,8 @@ public abstract class Car {
 				return;
 			}
 
-			int direction = directionDecision(map);
-			changePosition(map, direction);
+			int direction = directionDecision();
+			changePosition(direction);
 
 		}
 	}

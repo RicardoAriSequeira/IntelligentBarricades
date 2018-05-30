@@ -29,6 +29,7 @@ public class GraphicalInterface extends JFrame {
 	static JLabel time;
 
 	public long startTime;
+	public long totalTime;
 	
 	public GraphicalInterface(City city) {
 		setTitle("Barricades");		
@@ -134,8 +135,8 @@ public class GraphicalInterface extends JFrame {
 	}
 
 	public void updateClock() {
-		long end = System.currentTimeMillis();
-		time.setText(((end - startTime) / 1000) +"s");
+		totalTime = (System.currentTimeMillis() - startTime) / 1000;
+		time.setText(totalTime +"s");
 	}
 
 	private Component createButtonPanel(City city) {

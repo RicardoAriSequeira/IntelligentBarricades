@@ -6,11 +6,11 @@ import java.util.List;
 
 public class Thief extends Car {
 
-	public Thief(Point position){
-		super(position);
+	public Thief(Map map, Point position){
+		super(map,position);
 	}
 
-	public int directionDecision(Map map) {
+	public int directionDecision() {
 
 		int direction;
 
@@ -18,11 +18,11 @@ public class Thief extends Car {
 
 		if (this.directionToMantain != NOT_DEFINED) {
 
-			direction = checkWantedDirections(map);
+			direction = checkWantedDirections();
 
 			if (direction == STILL) {
 
-				if (possibleDirection(map,this.directionToMantain))
+				if (possibleDirection(this.directionToMantain))
 					return this.directionToMantain;
 				else
 					triedDirections[this.directionToMantain] = true;
@@ -31,7 +31,7 @@ public class Thief extends Car {
 
 					if (triedDirections[d] == false) {
 
-						if (possibleDirection(map,d)) {
+						if (possibleDirection(d)) {
 							this.directionToMantain = d;
 							return d;
 
@@ -52,14 +52,14 @@ public class Thief extends Car {
 		triedDirections[possibleDirections.get(r)] = true;
 		direction = possibleDirections.get(r);
 
-		if (!possibleDirection(map,direction)) {
+		if (!possibleDirection(direction)) {
 
 			if (direction == NORTH || direction == SOUTH)
 				wantedDirections = new int[]{WEST, EAST};
 			else
 				wantedDirections = new int[]{NORTH, SOUTH};
 
-			direction = checkWantedDirections(map);
+			direction = checkWantedDirections();
 
 			if (direction == STILL) {
 
@@ -67,7 +67,7 @@ public class Thief extends Car {
 
 					if (triedDirections[d] == false) {
 
-						if (possibleDirection(map,d)) {
+						if (possibleDirection(d)) {
 							this.directionToMantain = d;
 							return d;
 

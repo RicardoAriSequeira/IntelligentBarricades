@@ -6,11 +6,11 @@ import java.util.List;
 
 public class Civil extends Car {
 
-	public Civil(Point position){
-		super(position);
+	public Civil(Map map, Point position){
+		super(map, position);
 	}
 
-	public int directionDecision(Map map) {
+	public int directionDecision() {
 		Random generator = new Random(12345);
 		int r = generator.nextInt(possibleDirections.size());
 		return possibleDirections.get(r);

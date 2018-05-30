@@ -6,11 +6,14 @@ import java.util.List;
 
 public class Police extends Car {
 
-	public Police(Point position){
-		super(position);
+	private PoliceStation station;
+
+	public Police(Map map, PoliceStation station, Point position){
+		super(map, position);
+		this.station = station;
 	}
 
-	private boolean thiefInCell(Map map, Point p) {
+	private boolean thiefInCell(Point p) {
 
 		Cell cell = map.getCell(p);
 
@@ -21,87 +24,107 @@ public class Police extends Car {
 				if (cell.getCar() instanceof Thief) return true;
 
 		return false;
-
 	}
 
-	private Point thiefAround(Map map) {
+	private Point thiefAround() {
 
 		Point[] visionPoints = super.getVisionPoints();
 
-		for (Point point : visionPoints)
-			if (thiefInCell(map, point))
+		for (Point point : visionPoints) {
+			if (thiefInCell(point)) {
+				station.reportThiefPosition(point);
+				System.out.println("Thief found in cell " + point.x + "," + point.y);
 				return point;
+			}
+		}
 
 		return null;
-
 	}
 
-	public int directionDecision(Map map) {
+	private int pursuitThief(Point thiefPosition) {
 
 		Random generator = new Random(12345);
 		int r = generator.nextInt(2);
 
-		Point thiefPosition = thiefAround(map);
+		if (thiefPosition.x < this.position.x) {
 
-		if (thiefPosition != null) {
+			if (thiefPosition.y > this.position.y) {
 
-			if (thiefPosition.x < this.position.x) {
+				if (!possibleDirection(WEST) && possibleDirection(SOUTH)) return SOUTH;
 
-				if (thiefPosition.y > this.position.y) {
+				if (!possibleDirection(SOUTH) && possibleDirection(WEST)) return WEST;
 
-					if (!map.isCellRoad(new Point(this.position.x-1,this.position.y))) return SOUTH;
+				if (r == 0 && possibleDirection(SOUTH)) return SOUTH;
+				else if (r == 1 && possibleDirection(WEST)) return WEST;
+				return STILL;
 
-					if (!map.isCellRoad(new Point(this.position.x,this.position.y+1))) return WEST;
+			} else if (thiefPosition.y < this.position.y) {
 
-					if (r == 0) return SOUTH;
-					else return WEST;
+				if (!possibleDirection(WEST) && possibleDirection(NORTH)) return NORTH;
 
-				} else if (thiefPosition.y < this.position.y) {
+				if (!possibleDirection(NORTH) && possibleDirection(WEST)) return WEST;
 
-					if (!map.isCellRoad(new Point(this.position.x-1,this.position.y))) return NORTH;
+				if (r == 0 && possibleDirection(NORTH)) return NORTH;
+				else if (r == 1 && possibleDirection(WEST)) return WEST;
+				return STILL;
 
-					if (!map.isCellRoad(new Point(this.position.x,this.position.y-1))) return WEST;
-
-					if (r == 0) return NORTH;
-					else return WEST;
-
-				} else return WEST;
+			}  else if (possibleDirection(WEST)) return WEST;
+			else return STILL;
 
 
-			} else if (thiefPosition.x > this.position.x) {
+		} else if (thiefPosition.x > this.position.x) {
 
-				if (thiefPosition.y > this.position.y) {
+			if (thiefPosition.y > this.position.y) {
 
-					if (!map.isCellRoad(new Point(this.position.x+1,this.position.y))) return SOUTH;
+				if (!possibleDirection(EAST) && possibleDirection(SOUTH)) return SOUTH;
 
-					if (!map.isCellRoad(new Point(this.position.x,this.position.y+1))) return EAST;
+				if (!possibleDirection(SOUTH) && possibleDirection(EAST)) return EAST;
 
-					if (r == 0) return SOUTH;
-					else return EAST;
+				if (r == 0 && possibleDirection(SOUTH)) return SOUTH;
+				else if (r == 1 && possibleDirection(EAST)) return EAST;
+				return STILL;
 
-				} else if (thiefPosition.y < this.position.y) {
+			} else if (thiefPosition.y < this.position.y) {
 
-					if (!map.isCellRoad(new Point(this.position.x+1,this.position.y))) return NORTH;
+				if (!possibleDirection(EAST) && possibleDirection(NORTH)) return NORTH;
 
-					if (!map.isCellRoad(new Point(this.position.x,this.position.y-1))) return EAST;
+				if (!possibleDirection(NORTH) && possibleDirection(EAST)) return EAST;
 
-					if (r == 0) return NORTH;
-					else return EAST;
-					
-				} else return EAST;
-
-			} else {
-
-				if (thiefPosition.y > this.position.y) return SOUTH;
-				else return NORTH;
-
-			}
+				if (r == 0 && possibleDirection(NORTH)) return NORTH;
+				else if (r == 1 && possibleDirection(EAST)) return EAST;
+				return STILL;
+				
+			} else if (possibleDirection(EAST)) return EAST;
+			else return STILL;
 
 		} else {
 
-			r = generator.nextInt(possibleDirections.size());
-			return possibleDirections.get(r);
+			if (thiefPosition.y > this.position.y && possibleDirection(SOUTH)) return SOUTH;
+			else if (thiefPosition.y < this.position.y && possibleDirection(NORTH)) return NORTH;
+			return STILL;
 
+		}
+	}
+
+	public int directionDecision() {
+
+		if (station.isThiefPositionKnown()) {
+
+			System.out.println("vou atras do ladrao");
+
+			return pursuitThief(station.getThiefPosition());
+		}
+
+		Point thiefPosition = thiefAround();
+
+		if (thiefPosition != null) {
+
+			return pursuitThief(thiefPosition);
+
+		} else {
+			Random generator = new Random(12345);
+			int r = generator.nextInt(possibleDirections.size());
+			return possibleDirections.get(r);
 		}
 	}
 

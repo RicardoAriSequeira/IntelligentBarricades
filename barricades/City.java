@@ -20,6 +20,7 @@ public class City {
 	public List<Police> polices;
 	public Thief thief;
 	public Map map;
+	public PoliceStation station;
 	
 	public City(int nX, int nY) {
 		this.nX = nX;
@@ -32,6 +33,11 @@ public class City {
 		this.map = new Map(this.nX, this.nY);
 		this.civils = new ArrayList<Civil>();
 		this.polices = new ArrayList<Police>();
+		this.station = new PoliceStation();
+
+		insertThief(new Point(20,16));
+		insertPolice(new Point(8,16));
+		insertPolice(new Point(21,16));
 
 		/*
 		insertCivil(new Point(22,6)));
@@ -54,10 +60,6 @@ public class City {
 		insertCivil(new Point(8,17)));
 		insertCivil(new Point(17,17)));
 		*/
-		//insertCivil(new Point(19,16));
-		insertPolice(new Point(8,8));
-		insertPolice(new Point(25,25));
-		insertThief(new Point(20,16));
 	}
 
 	
@@ -83,10 +85,11 @@ public class City {
 
 	    	while(running){
 	    		updateClock();
+	    		station.update();
 		    	removeCars();
-		    	thief.go(map);
-				//for(Civil c : civils) c.go(map);
-				for(Police p: polices) p.go(map);
+		    	thief.go();
+				//for(Civil c : civils) c.go();
+				for(Police p: polices) p.go();
 				substituteCars();
 				displayCars();
 				try {
@@ -144,20 +147,18 @@ public class City {
 	}
 
 	public void insertCivil(Point p) {
-		Civil civil = new Civil(p);
+		Civil civil = new Civil(map,p);
 		this.civils.add(civil);
-		this.map.getCell(p).setCar(civil);
 	}
 
 	public void insertThief(Point p) {
-		this.thief = new Thief(p);
-		this.map.getCell(p).setCar(this.thief);
+		this.thief = new Thief(map,p);
 	}
 
 	public void insertPolice(Point p) {
-		Police police = new Police(p);
+		Police police = new Police(map,station,p);
 		this.polices.add(police);
-		this.map.getCell(p).setCar(police);
+		this.station.updatePolices(polices);
 	}
 
 	public void run(int time) {
@@ -174,9 +175,9 @@ public class City {
 
 	public void step() {
 		removeCars();
-		this.thief.go(map);
-		for(Civil c : civils) c.go(map);
-		for(Police p : polices) p.go(map);
+		this.thief.go();
+		for(Civil c : civils) c.go();
+		for(Police p : polices) p.go();
 		displayCars();
 	}
 
