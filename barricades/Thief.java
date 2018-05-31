@@ -12,8 +12,11 @@ public class Thief extends Car {
 	public boolean wrongWay;
 	*/
 
+	private boolean surrender;
+
 	public Thief(Map map, Point position){
 		super(map,position);
+		surrender = false;
 		//this.wrongWay = false;
 	}
 
@@ -60,6 +63,8 @@ public class Thief extends Car {
 
 	*/
 
+	public boolean surrender() {return surrender;}
+
 	private Point garageAround() {
 
 		Cell cell;
@@ -73,7 +78,6 @@ public class Thief extends Car {
 
 				if (cell.isGarage()) {
 
-					System.out.println("Garage found in cell " + point.x + "," + point.y);
 					return point;
 				}
 			}
@@ -177,10 +181,25 @@ public class Thief extends Car {
 
 	}
 
+	private boolean notTriedAllDirections(boolean[] triedDirections) {
+
+		if (triedDirections[0] == true &&
+			triedDirections[1] == true &&
+			triedDirections[2] == true &&
+			triedDirections[3] == true)
+
+			return false;
+
+		return true;
+
+	}
+
 	public int directionDecision() {
 
 		int direction = STILL;
 		boolean[] triedDirections = new boolean[4];
+
+		/*
 
 		if (!policeAround()) {
 
@@ -190,27 +209,35 @@ public class Thief extends Car {
 
 		}
 
-		Random generator = new Random();
-		List<Integer> possibleDirections = map.getCell(position).getPossibleDirections();
-		int r = generator.nextInt(possibleDirections.size());
+		*/
 
-		triedDirections[possibleDirections.get(r)] = true;
-		direction = possibleDirections.get(r);
+		Random generator = new Random(482398427);
+		List<Integer> legalDirections = map.getCell(position).getLegalDirections();
+		int r = generator.nextInt(legalDirections.size());
+
+		triedDirections[legalDirections.get(r)] = true;
+		direction = legalDirections.get(r);
+
+		//System.out.println("primeira direcao escolhida: " + direction);
 
 		if (thiefPossibleDirection(direction)) return direction;
 
-		for (int i = 0; i < possibleDirections.size(); i++) {
+		//System.out.println("nao foi possivel fazer a direcao: " + direction);
 
-			if (!triedDirections[possibleDirections.get(i)] &&
-				thiefPossibleDirection(possibleDirections.get(i)))
+		for (int i = 0; i < legalDirections.size(); i++) {
 
-				return possibleDirections.get(i);
+			if (!triedDirections[legalDirections.get(i)] &&
+				thiefPossibleDirection(legalDirections.get(i)))
+
+				return legalDirections.get(i);
 
 			else
 
-				triedDirections[possibleDirections.get(i)] = true;
+				triedDirections[legalDirections.get(i)] = true;
 
 		}
+
+		//System.out.println("vamos passar agora para as direcoes ilegais");
 
 		for (int i = 0; i < triedDirections.length; i++)
 
@@ -218,7 +245,21 @@ public class Thief extends Car {
 
 				return i;
 
+		//System.out.println("nao foi possivel nenhuma direcao ilegal");
 
+		triedDirections = new boolean[4];
+
+		while (notTriedAllDirections(triedDirections)) {
+
+			r = generator.nextInt(triedDirections.length);
+
+			if (!triedDirections[r] && possibleDirection(r)) return r;
+
+			triedDirections[r] = true;
+
+		}
+
+		surrender = true;
 		return STILL;
 
 

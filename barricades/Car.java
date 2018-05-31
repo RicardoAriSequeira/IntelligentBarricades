@@ -61,7 +61,7 @@ public abstract class Car {
 
 	public int goToPoint(Point point) {
 
-		Random generator = new Random(12345);
+		Random generator = new Random();
 		int r = generator.nextInt(2);
 
 		if (point.x < this.position.x) {
@@ -166,9 +166,11 @@ public abstract class Car {
 	
 	public void go(){
 
+		//System.out.println("Go do carro na posicao " + position.x + ", " + position.y);
+
 		if (map.inMap(this.position)) {
 
-			List<Integer> possibleDirections = map.getCell(position).getPossibleDirections();
+			List<Integer> possibleDirections = map.getCell(position).getLegalDirections();
 
 			if (possibleDirections.size() == 0) {
 				System.out.println("Error: there is no directions in cell (" + position.x + "," + position.y + ")");

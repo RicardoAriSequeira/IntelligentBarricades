@@ -25,7 +25,7 @@ public class GraphicalInterface extends JFrame {
 	
 	static JTextField speed;
 	static JPanel cityPanel;
-	static JButton run, reset, step;
+	static JButton run, reset, step, train;
 	static JLabel time;
 
 	public long startTime;
@@ -152,7 +152,7 @@ public class GraphicalInterface extends JFrame {
 		step.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(run.getText().equals("Run")) city.step();
-				else city.stop();
+				else city.stopRun();
 			}
 		});
 		reset = new JButton("Reset");
@@ -181,8 +181,21 @@ public class GraphicalInterface extends JFrame {
 	 					run.setText("Stop");						
 					}
  				} else {
-					city.stop();
+					city.stopRun();
  					run.setText("Run");
+ 				}
+			}
+		});
+		train = new JButton("Train");
+		panel.add(train);
+		train.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(train.getText().equals("Train")){
+					city.train();
+ 					train.setText("Stop");						
+				} else {
+					city.stopTrain();
+ 					train.setText("Train");
  				}
 			}
 		});

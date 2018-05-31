@@ -6,19 +6,25 @@ import java.util.ArrayList;
 
 public class Cell {
 
+	public static final int NORTH = 0;
+	public static final int SOUTH = 1;
+	public static final int EAST = 2;
+	public static final int WEST = 3;
+	public static final int STILL = 4;
+
 	private boolean isRoad, isBarricade, isGarage;
 	private boolean[] directions;
 
 	private Car car;
 	private Point coordinates;
-	private List<Integer> possibleDirections;
+	private List<Integer> legalDirections;
 
 	public Cell(int x, int y){
 		coordinates = new Point(x,y);
 		isRoad = false;
 		car = null;
 		directions = new boolean[4];
-		possibleDirections = new ArrayList<Integer>();
+		legalDirections = new ArrayList<Integer>();
 	}
 
 	public Point getCoordinates() {return coordinates;}
@@ -33,7 +39,7 @@ public class Cell {
 
 	public boolean[] getDirections() {return directions;}
 
-	public List<Integer> getPossibleDirections() {return possibleDirections;}
+	public List<Integer> getLegalDirections() {return legalDirections;}
 
 	public Car getCar() {return car;}
 
@@ -51,10 +57,52 @@ public class Cell {
 
 			isRoad = true;
 			directions[direction] = true;
-			possibleDirections.add(direction);
+			legalDirections.add(direction);
 
 		}
+	}
 
+	public List<Integer> getPossibleDirections(Map map) {
+
+		List<Integer> result = new ArrayList<Integer>();
+
+		result.add(STILL);
+
+		Point nextPosition = new Point(coordinates);
+		nextPosition.y--;
+		if (map.inMap(nextPosition))
+			if (map.getCell(nextPosition).isRoad() && !map.getCell(nextPosition).hasCar())
+				result.add(NORTH);
+
+		nextPosition = new Point(coordinates);
+		nextPosition.y++;
+		if (map.inMap(nextPosition))
+			if (map.getCell(nextPosition).isRoad() && !map.getCell(nextPosition).hasCar())
+				result.add(SOUTH);
+
+		nextPosition = new Point(coordinates);
+		nextPosition.x--;
+		if (map.inMap(nextPosition))
+			if (map.getCell(nextPosition).isRoad() && !map.getCell(nextPosition).hasCar())
+				result.add(WEST);
+
+		nextPosition = new Point(coordinates);
+		nextPosition.x++;
+		if (map.inMap(nextPosition))
+			if (map.getCell(nextPosition).isRoad() && !map.getCell(nextPosition).hasCar())
+				result.add(EAST);
+
+		return result;
+
+	}
+
+	public Point getNextState(int direction) {
+		Point nextPosition = new Point(coordinates);
+		if (direction == NORTH) nextPosition.y--;
+		else if (direction == SOUTH) nextPosition.y++;
+		else if (direction == EAST) nextPosition.x++;
+		else if (direction == WEST) nextPosition.x--;
+		return nextPosition;
 	}
 
 }

@@ -9,6 +9,7 @@ import java.util.Random;
 
 public class City {
 
+	public static final int Q_ITERATIONS = 1000;
 	public static final int NORTH = 0;
 	public static final int SOUTH = 1;
 	public static final int EAST = 2;
@@ -33,7 +34,7 @@ public class City {
 		this.map = new Map(this.nX, this.nY);
 		this.civils = new ArrayList<Civil>();
 		this.polices = new ArrayList<Police>();
-		this.station = new PoliceStation();
+		this.station = new PoliceStation(map);
 
 		insertThief(new Point(20,16));
 		insertPolice(new Point(8,16));
@@ -74,7 +75,6 @@ public class City {
 		
 		public RunThread(int time){
 			this.time = time;
-
 		}
 
 		public void terminate(){
@@ -83,7 +83,14 @@ public class City {
 		
 	    public void run() {
 
-	    	while(running){
+	    	map.initialize();
+	    	polices.get(0).position = new Point(8,16);
+			polices.get(1).position = new Point(21,16);
+			insertThief(new Point(20,16));
+			station.resetStation();
+
+	    	while(running && !station.isThiefArrested()){
+
 	    		updateClock();
 	    		station.update();
 		    	removeCars();
@@ -97,6 +104,63 @@ public class City {
 				} catch (InterruptedException e) {
 					this.interrupt();
 				}
+
+	    	}
+	    }
+	}
+
+	TrainThread trainThread;
+
+	public class TrainThread extends Thread {
+		
+		private volatile boolean running = true;
+		
+		public TrainThread(){
+		}
+
+		public void terminate(){
+			running = false;
+		}
+		
+	    public void run() {
+
+	    	boolean thiefAlreadyArrested = false;
+
+	    	while(running){
+
+	    		for (int i = 0; i < Q_ITERATIONS && running; i++) {
+
+	    			System.out.println("Iteration number " + i);
+
+	    			map.initialize();
+	    			polices.get(0).position = new Point(8,16);
+					polices.get(1).position = new Point(21,16);
+	    			insertThief(new Point(20,16));
+	    			station.resetStation();
+
+	    			while(!station.isThiefArrested()) {
+			    		station.update();
+				    	thief.go();
+						//for(Civil c : civils) c.go();
+						for(Police p: polices) p.train();
+						substituteCars();
+					}
+
+					/*
+
+					if (!thiefAlreadyArrested) {
+						removeCars();
+						displayCars();
+						thiefAlreadyArrested = true;
+						System.out.println("ladrao foi preso");
+					}
+
+					*/
+
+				}
+
+				terminate();
+
 	    	}
 	    }
 	}
@@ -167,6 +231,12 @@ public class City {
 		displayCars();
 	}
 
+	public void train() {
+		trainThread = new TrainThread();
+		trainThread.start();
+		displayCars();
+	}
+
 	public void reset() {
 		initialize();
 		displayCity();
@@ -181,10 +251,14 @@ public class City {
 		displayCars();
 	}
 
-	public void stop() {
+	public void stopRun() {
 		runThread.interrupt();
 		runThread.terminate();
 		displayCars();
+	}
+
+	public void stopTrain() {
+		trainThread.terminate();
 	}
 
 	public void displayCity(){

@@ -62,7 +62,7 @@ public class Map {
 
 	}
 
-	private void initialize() {
+	public void initialize() {
 
 		board = new Cell[nX][nY];
 		entryCells = new ArrayList<Cell>();
