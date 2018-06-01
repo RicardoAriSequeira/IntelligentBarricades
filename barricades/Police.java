@@ -64,8 +64,6 @@ public class Police extends Car {
 
     public int trainDirectionDecision(List<Integer> legalDirections) {
 
-    	triedDirections = new boolean[4];
-
 		Random generator = new Random();
 		int choice = generator.nextInt(100);
 
@@ -73,25 +71,53 @@ public class Police extends Car {
 			return STILL;
 		}
 
-		if (choice < 30) {
+		if (choice < 50) {
 
 			return directionDecision();
 
 		} else {
 
-			int direction = generator.nextInt(4);
+			if (station.isThiefPositionKnown()) {
 
-			while (!possibleDirection(direction) && !triedAllDirections()) {
-				triedDirections[direction] = true;
-				direction = generator.nextInt(4);
+				triedDirections = new boolean[4];
+				int direction = generator.nextInt(4);
+
+				while (!possibleDirection(direction)) {
+					triedDirections[direction] = true;
+					if (triedAllDirections()) {
+						break;
+					}
+					direction = generator.nextInt(4);
+				}
+
+				if (!possibleDirection(direction)) {
+					return STILL;
+				}
+
+				return direction;
+
+			} else {
+
+				triedDirections = new boolean[legalDirections.size()];
+				int r = generator.nextInt(legalDirections.size());
+				int direction = legalDirections.get(r);
+
+				while (!possibleDirection(direction)) {
+					triedDirections[r] = true;
+					if (triedAllDirections()) {
+						break;
+					}
+					r = generator.nextInt(legalDirections.size());
+					direction = legalDirections.get(r);
+				}
+				
+				if (!possibleDirection(direction)) {
+					return STILL;
+				}
+
+				return direction;
+
 			}
-
-			if (!possibleDirection(direction)) {
-				return STILL;
-			}
-
-			return direction;
-
 		}
     }
 

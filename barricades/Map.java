@@ -72,7 +72,7 @@ public class Map {
 				board[i][j] = new Cell(i,j);
 
 		Cell c = getCell(new Point(16, 2));
-		c.setIsGarage();
+		//c.setIsGarage();
 		for(int i=0; i<nX; i++) {
 
 			setCellDirection(new Point(8,i), SOUTH);
@@ -81,14 +81,14 @@ public class Map {
 			setCellDirection(new Point(23,i), NORTH);
 
 			if (i<17) {
-				setCellDirection(new Point(3,i), NORTH);
+				setCellDirection(new Point(2,i), NORTH);
 				setCellDirection(new Point(13,i), SOUTH);
-				setCellDirection(new Point(28,i), SOUTH);
+				setCellDirection(new Point(29,i), SOUTH);
 			}
 			if ((i<21) || (i>25 && i<30))
 				setCellDirection(new Point(18,i), NORTH);
-			if (i>15 && i<25)
-				setCellDirection(new Point(29,i), SOUTH);
+			if (i>15 && i<32)
+				setCellDirection(new Point(29,i), NORTH);
 			if (i>16 && i<32)
 				setCellDirection(new Point(5,i), SOUTH);
 			if ((i>16 && i<25) || (i>29 && i<32))
@@ -101,25 +101,23 @@ public class Map {
 				setCellDirection(new Point(13,i), NORTH);
 				setCellDirection(new Point(26,i), NORTH);
 			}
-			if (i>25 && i<30)
-				setCellDirection(new Point(28,i), NORTH);
 		}
 
 		for(int j=0; j<nY; j++) {
 
-			setCellDirection(new Point(j,3), EAST);
+			setCellDirection(new Point(j,2), EAST);
 			setCellDirection(new Point(j,16), WEST);
 			setCellDirection(new Point(j,17), EAST);
 			setCellDirection(new Point(j,21), EAST);
 			setCellDirection(new Point(j,25), WEST);
 			setCellDirection(new Point(j,29), EAST);
 
-			if ((j<4) || (j>8 && j<14) || (j>18 && j<24) || (j>28 && j<32))
+			if ((j<3) || (j>8 && j<14) || (j>18 && j<24) || (j>28 && j<32))
 				setCellDirection(new Point(j,10), WEST);
-			if (j>3 && j<9) {
+			if (j>2 && j<9)
 				setCellDirection(new Point(j,7), WEST);
+			if (j>1 && j<9)
 				setCellDirection(new Point(j,12), EAST);
-			}
 			if (j>13 && j<18) {
 				setCellDirection(new Point(j,8), WEST);
 				setCellDirection(new Point(j,13), EAST);

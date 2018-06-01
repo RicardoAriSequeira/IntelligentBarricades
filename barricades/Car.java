@@ -52,29 +52,62 @@ public abstract class Car {
 
 	protected boolean possibleDirection(int direction) {
 
+		//System.out.println(direction);
+
 		Point nextPosition = new Point(position);
 
 		if (direction == NORTH) nextPosition.y--;
 		else if (direction == SOUTH) nextPosition.y++;
 		else if (direction == EAST) nextPosition.x++;
 		else if (direction == WEST) nextPosition.x--;
+		else return true;
+
+		if (direction == NORTH) {
+			if (map.getCell(new Point(position.x,position.y-1)) == null ||
+				map.getCell(new Point(position.x,position.y-2)) == null ||
+				map.getCell(new Point(position.x,position.y-3)) == null) {
+				return false;
+			}
+		}
+
+		if (direction == SOUTH) {
+			if (map.getCell(new Point(position.x,position.y+1)) == null ||
+				map.getCell(new Point(position.x,position.y+2)) == null ||
+				map.getCell(new Point(position.x,position.y+3)) == null) {
+				return false;
+			}
+		}
+
+		if (direction == EAST) {
+			if (map.getCell(new Point(position.x+1,position.y)) == null ||
+				map.getCell(new Point(position.x+2,position.y)) == null ||
+				map.getCell(new Point(position.x+3,position.y)) == null) {
+				return false;
+			}
+		}
+
+		if (direction == WEST) {
+			if (map.getCell(new Point(position.x-1,position.y)) == null ||
+				map.getCell(new Point(position.x-2,position.y)) == null ||
+				map.getCell(new Point(position.x-3,position.y)) == null) {
+				return false;
+			}
+		}
 
 		if (map.inMap(nextPosition))
 			if (map.getCell(nextPosition).isRoad() && map.getCell(nextPosition).hasCar() == false)
 				return true;
+
 		return false;
 	}
 
 	protected boolean triedAllDirections() {
 
-		if (triedDirections[0] == true &&
-			triedDirections[1] == true &&
-			triedDirections[2] == true &&
-			triedDirections[3] == true)
+		for (int i = 0; i < triedDirections.length; i++) {
+			if (triedDirections[i] == false) return false;
+		}
 
-			return true;
-
-		return false;
+		return true;
 
 	}
 

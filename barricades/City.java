@@ -9,7 +9,6 @@ import java.util.Random;
 
 public class City {
 
-	public static final int Q_ITERATIONS = 10000;
 	public static final int NORTH = 0;
 	public static final int SOUTH = 1;
 	public static final int EAST = 2;
@@ -83,7 +82,7 @@ public class City {
 		
 	    public void run() {
 
-	    	System.out.println("RUN");
+	    	removeCars();
 
 	    	map.initialize();
 	    	polices.get(0).restartPolice(new Point(8,16));
@@ -117,9 +116,13 @@ public class City {
 
 	public class TrainThread extends Thread {
 		
+		int iterations;
+		boolean display;
 		private volatile boolean running = true;
 		
-		public TrainThread(){
+		public TrainThread(int iterations, boolean display){
+			this.iterations = iterations;
+			this.display = display;
 		}
 
 		public void terminate(){
@@ -134,11 +137,12 @@ public class City {
 
 	    		long startIteration;
 
-	    		for (int i = 0; i < Q_ITERATIONS && running; i++) {
+	    		for (int i = 0; i < iterations && running; i++) {
 
 	    			startIteration = System.nanoTime();
 
 	    			System.out.print("Iteration number " + i + ": ");
+	    			GUI.setTrainText((i + 1) + " of " + iterations);
 
 	    			map.initialize();
 	    			polices.get(0).restartPolice(new Point(8,16));
@@ -158,7 +162,7 @@ public class City {
 						}
 						substituteCars();
 
-						if (false) {
+						if (display) {
 							displayCars();
 							
 							try {
@@ -168,13 +172,13 @@ public class City {
 							}
 						}	
 						
-						
 					}
 
 					System.out.println(((System.nanoTime() - startIteration) / 1000) + "ns");
 
 				}
 
+				GUI.setTrainText("Train");
 				terminate();
 
 	    	}
@@ -247,8 +251,8 @@ public class City {
 		//displayCars();
 	}
 
-	public void train() {
-		trainThread = new TrainThread();
+	public void train(int iterations, boolean display) {
+		trainThread = new TrainThread(iterations, display);
 		trainThread.start();
 		//displayCars();
 	}

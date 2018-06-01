@@ -195,11 +195,11 @@ public class PoliceStation {
 		}
 
 		if (directionOfThief(state, direction)) {
-			reward += 30;
+			reward += 70;
 
 		} else {
 			Point nextState = map.getCell(state).getNextState(direction);
-			reward += 20 / (1 + seenCells[nextState.x + nextState.y * map.nY]);
+			reward += 10 / (1 + seenCells[nextState.x + nextState.y * map.nY]);
 		}
 
 		return reward;

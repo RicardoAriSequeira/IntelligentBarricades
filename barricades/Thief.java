@@ -134,19 +134,39 @@ public class Thief extends Car {
 
 	public int directionDecision() {
 
-		triedDirections = new boolean[4];
-
 		Random generator = new Random(482398427);
-		int direction = generator.nextInt(4);
+		List<Integer> legalDirections = map.getCell(position).getLegalDirections();
 
-		while (!possibleDirection(direction) && !triedAllDirections()) {
-			triedDirections[direction] = true;
-			direction = generator.nextInt(4);
+		triedDirections = new boolean[legalDirections.size()];
+		int r = generator.nextInt(legalDirections.size());
+		int direction = legalDirections.get(r);
+
+		while (!possibleDirection(direction)) {
+			triedDirections[r] = true;
+			if (triedAllDirections()) {
+				break;
+			}
+			r = generator.nextInt(legalDirections.size());
+			direction = legalDirections.get(r);
 		}
 
 		if (!possibleDirection(direction)) {
-			surrender = true;
-			return STILL;
+
+			triedDirections = new boolean[4];
+			direction = generator.nextInt(4);
+
+			while (!possibleDirection(direction)) {
+				triedDirections[direction] = true;
+				if (triedAllDirections()) {
+					break;
+				}
+				direction = generator.nextInt(4);
+			}
+
+			if (!possibleDirection(direction)) {
+				surrender = true;
+				return STILL;
+			}
 		}
 
 		return direction;

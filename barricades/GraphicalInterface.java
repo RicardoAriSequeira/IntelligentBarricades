@@ -17,16 +17,18 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.JCheckBox;
 
 
 public class GraphicalInterface extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	static JTextField speed;
+	static JTextField speed, iterations;
 	static JPanel cityPanel;
 	static JButton run, reset, step, train;
 	static JLabel time;
+	static JCheckBox display;
 
 	public long startTime;
 	public long totalTime;
@@ -45,7 +47,6 @@ public class GraphicalInterface extends JFrame {
 			for(int j=0; j<city.nY; j++)
 				cityPanel.add(new JPanel());
 		displayCity(city);
-		displayCars(city);
 		city.GUI = this;
 		add(cityPanel);
 	}
@@ -137,8 +138,14 @@ public class GraphicalInterface extends JFrame {
 	}
 
 	public void updateClock() {
+		/*
 		totalTime = (System.currentTimeMillis() - startTime) / 1000;
 		time.setText(totalTime +"s");
+		*/
+	}
+
+	public void setTrainText(String s) {
+		train.setText(s);
 	}
 
 	private Component createButtonPanel(City city) {
@@ -146,6 +153,8 @@ public class GraphicalInterface extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setSize(new Dimension(600,50));
 		panel.setLocation(new Point(0,0));
+
+		/*
 		
 		step = new JButton("Step");
 		panel.add(step);
@@ -162,6 +171,9 @@ public class GraphicalInterface extends JFrame {
 				city.reset();
 			}
 		});
+
+		*/
+
 		run = new JButton("Run");
 		panel.add(run);
 		run.addActionListener(new ActionListener() {
@@ -191,7 +203,7 @@ public class GraphicalInterface extends JFrame {
 		train.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(train.getText().equals("Train")){
-					city.train();
+					city.train(Integer.valueOf(iterations.getText()), display.isSelected());
  					train.setText("Stop");						
 				} else {
 					city.stopTrain();
@@ -199,12 +211,26 @@ public class GraphicalInterface extends JFrame {
  				}
 			}
 		});
-		speed = new JTextField("40");
+
+		display = new JCheckBox("Display");
+		panel.add(display);
+
+		panel.add(new JLabel("Train Iterations:"));
+		iterations = new JTextField("1000");
+		iterations.setMargin(new Insets(5,5,5,5));
+		panel.add(iterations);
+
+		panel.add(new JLabel("Run Step Time:"));
+		speed = new JTextField("20");
 		speed.setMargin(new Insets(5,5,5,5));
 		panel.add(speed);
 
+		/*
+		panel.add(new JLabel("Run Total Time:"));
 		time = new JLabel(0 + "s");
 		panel.add(time);
+
+		*/
 		
 		return panel;
 	}
