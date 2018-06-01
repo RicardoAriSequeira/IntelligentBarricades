@@ -13,26 +13,24 @@ public class PoliceStation {
 	private Map map;
 	private List<Police> polices;
 	private Point thiefPosition;
-	private boolean thiefPositionUpdated;
-	private boolean oneStepPassed;
-	private boolean thiefArrested;
+	private boolean oneStepPassed, thiefPositionUpdated, thiefArrested;
 
 	private int[] seenCells;
 
 	public PoliceStation(Map map) {
 		this.map = map;
 		this.thiefPosition = null;
-		this.thiefPositionUpdated = false;
 		this.oneStepPassed = false;
 		this.thiefArrested = false;
+		this.thiefPositionUpdated = false;
 		this.seenCells = new int[map.nX * map.nY];
 	}
 
 	public void resetStation() {
 		this.thiefPosition = null;
-		this.thiefPositionUpdated = false;
 		this.oneStepPassed = false;
 		this.thiefArrested = false;
+		this.thiefPositionUpdated = false;
 		this.seenCells = new int[map.nX * map.nY];
 	}
 
@@ -47,22 +45,37 @@ public class PoliceStation {
 	public void updatePolices(List<Police> polices) {this.polices = polices;}
 
 	public void reportThiefPosition(Point p) {
-		this.thiefPositionUpdated = true;
-		this.thiefPosition = p;
+
+		if (!this.thiefPositionUpdated || this.oneStepPassed || this.thiefPosition == null) {
+			this.thiefPosition = p;
+			this.oneStepPassed = false;
+			this.thiefPositionUpdated = true;
+			return;
+		}
+
+		if (!this.oneStepPassed && !p.equals(this.thiefPosition)) {
+			this.thiefPosition = p;
+			this.thiefPositionUpdated = true;
+			return;
+		}
 	}
 
 	public void update() {
 
-		for (int i = 0; i < seenCells.length; i++)
+		for (int i = 0; i < seenCells.length; i++) {
 			if (seenCells[i] > 0) seenCells[i]--;
+		}
 
-		for (Police p: polices)
+		for (Police p: polices) {
 			seenCells[p.position.x + p.position.y * map.nY] = 10;
+		}
 
-		if (this.oneStepPassed)
+		if (this.oneStepPassed) {
 			this.thiefPositionUpdated = false;
-		else
+		}
+		else {
 			this.oneStepPassed = true;
+		}
 	}
 
 	public boolean directionOfThief(Point state, int direction) {
@@ -71,36 +84,103 @@ public class PoliceStation {
 
 			if (thiefPosition.x < state.x) {
 
-				if (thiefPosition.y < state.y)
-					if (direction == WEST || direction == NORTH) return true;
+				
 
-				else if (thiefPosition.y > state.y)
+				if (thiefPosition.y < state.y) {
+					if (direction == WEST || direction == NORTH) {
+						return true;
+					}
+				}
+
+				else if (thiefPosition.y > state.y){
 					if (direction == WEST || direction == SOUTH) return true;
+				}
 
-				else
-					if (direction == WEST) return true;
+				else{
+					if (direction == WEST) {
+						return true;
+					}
+				}
 
 			} else if (thiefPosition.x > state.x) {
 
-				if (thiefPosition.y < state.y)
-					if (direction == EAST || direction == NORTH) return true;
+				
 
-				else if (thiefPosition.y > state.y)
-					if (direction == EAST || direction == SOUTH) return true;
+				if (thiefPosition.y < state.y) {
+					if (direction == EAST || direction == NORTH) {
+						return true;
+					}
+				}
 
-				else
-					if (direction == EAST) return true;
+				else if (thiefPosition.y > state.y) {
+					if (direction == EAST || direction == SOUTH) {
+						return true;
+					}
+				}
+
+				else {
+					if (direction == EAST) {
+						return true;
+					}
+				}
 
 			} else {
 
-				if (thiefPosition.y < state.y)
-					if (direction == NORTH) return true;
+				if (thiefPosition.y < state.y) {
+					if (direction == NORTH) {
+						return true;
+					}
+				}
 
-				else
-					if (direction == SOUTH) return true;
+				else {
+					if (direction == SOUTH) {
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+
+	}
+
+	public boolean nextToThief(Point p) {
+
+		if (thiefPositionUpdated) {
+
+			Cell cell = map.getCell(new Point(p.x+1,p.y));
+
+			if (cell != null) {
+				if (map.getCell(new Point(p.x+1,p.y)).hasThief()) {
+					return true;
+				}
 			}
 
-		} else return false;
+			cell = map.getCell(new Point(p.x-1,p.y));
+
+			if (cell != null) {
+				if (map.getCell(new Point(p.x-1,p.y)).hasThief()) {
+					return true;
+				}
+			}
+
+			cell = map.getCell(new Point(p.x,p.y+1));
+
+			if (cell != null) {
+				if (map.getCell(new Point(p.x,p.y+1)).hasThief()) {
+					return true;
+				}
+			}
+
+			cell = map.getCell(new Point(p.x,p.y-1));
+
+			if (cell != null) {
+				if (map.getCell(new Point(p.x,p.y-1)).hasThief()) {
+					return true;
+				}
+			}
+
+		}
 
 		return false;
 
@@ -108,41 +188,21 @@ public class PoliceStation {
 
 	public int getReward(Point state, int direction) {
 
-		if (directionOfThief(state, direction)) {
-			return 100;
-		} else {
-			Point nextState = map.getCell(state).getNextState(direction);
-			return 25 / 1 + seenCells[nextState.x + nextState.y * map.nY];
+		int reward = 0;
+
+		if (nextToThief(state) && thiefArrested) {
+			reward += 100;
 		}
 
-		/*
-		rewards[(thiefPosition.x+1)+(thiefPosition.y)*map.nY][STILL] += 100;
-		rewards[(thiefPosition.x-1)+(thiefPosition.y)*map.nY][STILL] += 100;
-		rewards[(thiefPosition.x)+(thiefPosition.y+1)*map.nY][STILL] += 100;
-		rewards[(thiefPosition.x)+(thiefPosition.y-1)*map.nY][STILL] += 100;
+		if (directionOfThief(state, direction)) {
+			reward += 30;
 
-		rewards[(thiefPosition.x+3)+(thiefPosition.y)*map.nY][WEST] += 100;
-		rewards[(thiefPosition.x+2)+(thiefPosition.y)*map.nY][WEST] += 100;
-		rewards[(thiefPosition.x-2)+(thiefPosition.y)*map.nY][EAST] += 100;
-		rewards[(thiefPosition.x-3)+(thiefPosition.y)*map.nY][EAST] += 100;
-		rewards[(thiefPosition.x)+(thiefPosition.y+3)*map.nY][SOUTH] += 100;
-		rewards[(thiefPosition.x)+(thiefPosition.y+2)*map.nY][SOUTH] += 100;
-		rewards[(thiefPosition.x)+(thiefPosition.y-2)*map.nY][NORTH] += 100;
-		rewards[(thiefPosition.x)+(thiefPosition.y-3)*map.nY][NORTH] += 100;
+		} else {
+			Point nextState = map.getCell(state).getNextState(direction);
+			reward += 20 / (1 + seenCells[nextState.x + nextState.y * map.nY]);
+		}
 
-		rewards[(thiefPosition.x+1)+(thiefPosition.y+1)*map.nY][EAST] += 100;
-		rewards[(thiefPosition.x+1)+(thiefPosition.y+1)*map.nY][SOUTH] += 100;
-
-		rewards[(thiefPosition.x-1)+(thiefPosition.y+1)*map.nY][WEST] += 100;
-		rewards[(thiefPosition.x-1)+(thiefPosition.y+1)*map.nY][SOUTH] += 100;
-
-		rewards[(thiefPosition.x+1)+(thiefPosition.y-1)*map.nY][EAST] += 100;
-		rewards[(thiefPosition.x+1)+(thiefPosition.y-1)*map.nY][NORTH] += 100;
-
-		rewards[(thiefPosition.x-1)+(thiefPosition.y-1)*map.nY][WEST] += 100;
-		rewards[(thiefPosition.x-1)+(thiefPosition.y-1)*map.nY][NORTH] += 100;
-
-		*/
+		return reward;
 
 	}
 

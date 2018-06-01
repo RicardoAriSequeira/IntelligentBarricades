@@ -10,7 +10,7 @@ public class Police extends Car {
     private final int actionsCount = 5;
 
 	private PoliceStation station;
-	private double[][] Q;
+	public double[][] Q;
 
 	public Police(Map map, PoliceStation station, Point position){
 		super(map, position);
@@ -39,20 +39,20 @@ public class Police extends Car {
 					Car car = cell.getCar();
 
 					if (car instanceof Thief) {
-						//System.out.println("Police in " + position.x + ", " + position.y + " found thief in cell " + point.x + "," + point.y);
+
 						station.reportThiefPosition(point);
-						if (((Thief)car).surrender()) station.reportThiefSurrender();
-						//return point;
+
+						if (((Thief)car).surrender()) {
+							station.reportThiefSurrender();
+						}
 					}
 				}
 			}
 		}
-
-		//return null;
 	}
 
 	private double maxQ(Point s) {
-        List<Integer> actionsFromState = map.getCell(position).getPossibleDirections(map);
+        List<Integer> actionsFromState = map.getCell(position).getLegalDirections();
         double maxValue = Double.MIN_VALUE;
         for (int i = 0; i < actionsFromState.size(); i++) {
             int action = actionsFromState.get(i);
@@ -62,23 +62,53 @@ public class Police extends Car {
         return maxValue;
     }
 
+    public int trainDirectionDecision(List<Integer> legalDirections) {
+
+    	triedDirections = new boolean[4];
+
+		Random generator = new Random();
+		int choice = generator.nextInt(100);
+
+		if (station.nextToThief(position)) {
+			return STILL;
+		}
+
+		if (choice < 30) {
+
+			return directionDecision();
+
+		} else {
+
+			int direction = generator.nextInt(4);
+
+			while (!possibleDirection(direction) && !triedAllDirections()) {
+				triedDirections[direction] = true;
+				direction = generator.nextInt(4);
+			}
+
+			if (!possibleDirection(direction)) {
+				return STILL;
+			}
+
+			return direction;
+
+		}
+    }
+
     public void train() {
 
 		if (map.inMap(this.position)) {
 
 			searchThiefAround();
 
-			Random generator = new Random();
+	        List<Integer> legalDirections = map.getCell(position).getLegalDirections();
 
-	        List<Integer> actionsFromState = map.getCell(position).getPossibleDirections(map);
-
-			if (actionsFromState.size() == 0) {
+			if (legalDirections.size() == 0) {
 				System.out.println("Error: there is no directions in cell (" + position.x + "," + position.y + ")");
 				return;
 			}
-	         
-	        int index = generator.nextInt(actionsFromState.size());
-	        int action = actionsFromState.get(index);
+
+	       	int action = trainDirectionDecision(legalDirections);
 
 	        Point nextState = map.getCell(position).getNextState(action);
 
@@ -86,13 +116,13 @@ public class Police extends Car {
 	        double maxQ = maxQ(nextState);
 	        int r = station.getReward(position, action);
 
-	        double value = q + ( 1 / (actionsFromState.size() + 1) ) * (r + gamma * maxQ - q);
+	        List<Integer> actionsFromState = map.getCell(position).getPossibleDirections(map);
+	        double value = q + ( (float) 1 / (actionsFromState.size() + 1) ) * (r + gamma * maxQ - q);
 	        Q[position.x+map.nY*position.y][action] = value;
 
 			changePosition(action);
 
 		}
-
 	}
 
 	public int directionDecision() {
@@ -101,45 +131,16 @@ public class Police extends Car {
         double maxValue = Double.MIN_VALUE;
         int bestAction = STILL;
 
-        Point state = position; // default goto self if not found
-
         for (int i = 0; i < actionsFromState.size(); i++) {
             int action = actionsFromState.get(i);
-            double value = Q[state.x + state.y*map.nY][action];
+            double value = Q[position.x + position.y*map.nY][action];
  
             if (value > maxValue) {
                 maxValue = value;
-                state = map.getCell(state).getNextState(action);
                 bestAction = action;
             }
         }
 
         return bestAction;
-
-		/*
-
-		Point thiefPosition = thiefAround();
-
-		if (station.isThiefPositionKnown()) {
-
-			System.out.println("Helping in the pursuit!");
-
-			return goToPoint(station.getThiefPosition());
-		}
-
-		if (thiefPosition != null) {
-
-			return goToPoint(thiefPosition);
-
-		} else {
-			Random generator = new Random(12345);
-			List<Integer> possibleDirections = map.getCell(position).getPossibleDirections();
-			int r = generator.nextInt(possibleDirections.size());
-			return possibleDirections.get(r);
-		}
-
-		*/
-
 	}
-
 }

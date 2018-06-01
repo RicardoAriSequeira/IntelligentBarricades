@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class City {
 
-	public static final int Q_ITERATIONS = 1000;
+	public static final int Q_ITERATIONS = 10000;
 	public static final int NORTH = 0;
 	public static final int SOUTH = 1;
 	public static final int EAST = 2;
@@ -83,11 +83,15 @@ public class City {
 		
 	    public void run() {
 
+	    	System.out.println("RUN");
+
 	    	map.initialize();
-	    	polices.get(0).position = new Point(8,16);
-			polices.get(1).position = new Point(21,16);
+	    	polices.get(0).restartPolice(new Point(8,16));
+			polices.get(1).restartPolice(new Point(21,16));
 			insertThief(new Point(20,16));
 			station.resetStation();
+
+			displayCars();
 
 	    	while(running && !station.isThiefArrested()){
 
@@ -128,34 +132,46 @@ public class City {
 
 	    	while(running){
 
+	    		long startIteration;
+
 	    		for (int i = 0; i < Q_ITERATIONS && running; i++) {
 
-	    			System.out.println("Iteration number " + i);
+	    			startIteration = System.nanoTime();
+
+	    			System.out.print("Iteration number " + i + ": ");
 
 	    			map.initialize();
-	    			polices.get(0).position = new Point(8,16);
-					polices.get(1).position = new Point(21,16);
+	    			polices.get(0).restartPolice(new Point(8,16));
+					polices.get(1).restartPolice(new Point(21,16));
 	    			insertThief(new Point(20,16));
 	    			station.resetStation();
 
 	    			while(!station.isThiefArrested()) {
+
+	    				removeCars();
+
 			    		station.update();
 				    	thief.go();
 						//for(Civil c : civils) c.go();
-						for(Police p: polices) p.train();
+						for(Police p: polices)  {
+							p.train();
+						}
 						substituteCars();
+
+						if (false) {
+							displayCars();
+							
+							try {
+								sleep(10);
+							} catch (InterruptedException e) {
+								this.interrupt();
+							}
+						}	
+						
+						
 					}
 
-					/*
-
-					if (!thiefAlreadyArrested) {
-						removeCars();
-						displayCars();
-						thiefAlreadyArrested = true;
-						System.out.println("ladrao foi preso");
-					}
-
-					*/
+					System.out.println(((System.nanoTime() - startIteration) / 1000) + "ns");
 
 				}
 
@@ -191,7 +207,7 @@ public class City {
 		}
 
 		List<Cell> entryCells = map.getEntryCells();
-		Random generator = new Random(12345);
+		Random generator = new Random(482398427);
 		Cell randomEntryCell;
 
 		for (int p = 0; p < deletedPolices; p++) {
@@ -228,13 +244,13 @@ public class City {
 	public void run(int time) {
 		runThread = new RunThread(time);
 		runThread.start();
-		displayCars();
+		//displayCars();
 	}
 
 	public void train() {
 		trainThread = new TrainThread();
 		trainThread.start();
-		displayCars();
+		//displayCars();
 	}
 
 	public void reset() {

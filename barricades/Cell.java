@@ -52,14 +52,21 @@ public class Cell {
 	public void setCar(Car car) {this.car = car;}
 
 	public void setDirection(int direction) {
-
 		if (directions[direction] == false) {
-
 			isRoad = true;
 			directions[direction] = true;
 			legalDirections.add(direction);
-
 		}
+	}
+
+	public boolean hasThief() {
+		if (hasCar()) {
+			if (getCar() instanceof Thief) {
+				return true;
+			} else {
+				return false;
+			}
+		} else return false;
 	}
 
 	public List<Integer> getPossibleDirections(Map map) {
