@@ -10,27 +10,29 @@ public class PoliceStation {
 	public static final int EAST = 2;
 	public static final int WEST = 3;
 
+	private Thief thief;
 	private Map map;
 	private List<Police> polices;
-	private Point thiefPosition;
+	//private Point thiefPosition;
 	private boolean oneStepPassed, thiefPositionUpdated, thiefArrested;
 
 	private int[] seenCells;
 
-	public PoliceStation(Map map) {
+	public PoliceStation(Map map, Thief thief) {
 		this.map = map;
-		this.thiefPosition = null;
-		this.oneStepPassed = false;
+		//this.thiefPosition = null;
+		//this.oneStepPassed = false;
 		this.thiefArrested = false;
-		this.thiefPositionUpdated = false;
+		this.thiefPositionUpdated = true;
 		this.seenCells = new int[map.nX * map.nY];
+		this.thief = thief;
 	}
 
 	public void resetStation() {
-		this.thiefPosition = null;
-		this.oneStepPassed = false;
+		//this.thiefPosition = null;
+		//this.oneStepPassed = false;
 		this.thiefArrested = false;
-		this.thiefPositionUpdated = false;
+		this.thiefPositionUpdated = true;
 		this.seenCells = new int[map.nX * map.nY];
 	}
 
@@ -38,13 +40,16 @@ public class PoliceStation {
 
 	public boolean isThiefPositionKnown() {return thiefPositionUpdated;}
 
-	public Point getThiefPosition() {return thiefPosition;}
+	//public Point getThiefPosition() {return thiefPosition;}
+	public Point getThiefPosition() {return thief.position;}
 
 	public void reportThiefSurrender() {thiefArrested = true;}
 
 	public void updatePolices(List<Police> polices) {this.polices = polices;}
 
 	public void reportThiefPosition(Point p) {
+
+		/*
 
 		if (!this.thiefPositionUpdated || this.oneStepPassed || this.thiefPosition == null) {
 			this.thiefPosition = p;
@@ -58,6 +63,8 @@ public class PoliceStation {
 			this.thiefPositionUpdated = true;
 			return;
 		}
+
+		*/
 	}
 
 	public void update() {
@@ -70,29 +77,31 @@ public class PoliceStation {
 			seenCells[p.position.x + p.position.y * map.nY] = 10;
 		}
 
+		/*
+
 		if (this.oneStepPassed) {
 			this.thiefPositionUpdated = false;
 		}
 		else {
 			this.oneStepPassed = true;
 		}
+
+		*/
 	}
 
 	public boolean directionOfThief(Point state, int direction) {
 
 		if (thiefPositionUpdated) {
 
-			if (thiefPosition.x < state.x) {
+			if (thief.position.x < state.x) {
 
-				
-
-				if (thiefPosition.y < state.y) {
+				if (thief.position.y < state.y) {
 					if (direction == WEST || direction == NORTH) {
 						return true;
 					}
 				}
 
-				else if (thiefPosition.y > state.y){
+				else if (thief.position.y > state.y){
 					if (direction == WEST || direction == SOUTH) return true;
 				}
 
@@ -102,17 +111,17 @@ public class PoliceStation {
 					}
 				}
 
-			} else if (thiefPosition.x > state.x) {
+			} else if (thief.position.x > state.x) {
 
 				
 
-				if (thiefPosition.y < state.y) {
+				if (thief.position.y < state.y) {
 					if (direction == EAST || direction == NORTH) {
 						return true;
 					}
 				}
 
-				else if (thiefPosition.y > state.y) {
+				else if (thief.position.y > state.y) {
 					if (direction == EAST || direction == SOUTH) {
 						return true;
 					}
@@ -126,7 +135,7 @@ public class PoliceStation {
 
 			} else {
 
-				if (thiefPosition.y < state.y) {
+				if (thief.position.y < state.y) {
 					if (direction == NORTH) {
 						return true;
 					}
@@ -191,15 +200,15 @@ public class PoliceStation {
 		int reward = 0;
 
 		if (nextToThief(state) && thiefArrested) {
-			reward += 100;
+			reward += 1000;
 		}
 
 		if (directionOfThief(state, direction)) {
-			reward += 70;
+			reward += 150;
 
 		} else {
-			Point nextState = map.getCell(state).getNextState(direction);
-			reward += 10 / (1 + seenCells[nextState.x + nextState.y * map.nY]);
+			//Point nextState = map.getCell(state).getNextPoint(direction);
+			//reward += 50 / (1 + seenCells[nextState.x + nextState.y * map.nY]);
 		}
 
 		return reward;

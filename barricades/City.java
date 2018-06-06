@@ -33,11 +33,15 @@ public class City {
 		this.map = new Map(this.nX, this.nY);
 		this.civils = new ArrayList<Civil>();
 		this.polices = new ArrayList<Police>();
-		this.station = new PoliceStation(map);
 
 		insertThief(new Point(20,16));
+
+		this.station = new PoliceStation(map, thief);
+
 		insertPolice(new Point(8,16));
 		insertPolice(new Point(21,16));
+		insertPolice(new Point(8,8));
+		insertPolice(new Point(23,22));
 
 		/*
 		insertCivil(new Point(22,6)));
@@ -87,6 +91,8 @@ public class City {
 	    	map.initialize();
 	    	polices.get(0).restartPolice(new Point(8,16));
 			polices.get(1).restartPolice(new Point(21,16));
+			polices.get(2).restartPolice(new Point(8,8));
+			polices.get(3).restartPolice(new Point(23,22));
 			insertThief(new Point(20,16));
 			station.resetStation();
 
@@ -147,6 +153,8 @@ public class City {
 	    			map.initialize();
 	    			polices.get(0).restartPolice(new Point(8,16));
 					polices.get(1).restartPolice(new Point(21,16));
+					polices.get(2).restartPolice(new Point(8,8));
+					polices.get(3).restartPolice(new Point(23,22));
 	    			insertThief(new Point(20,16));
 	    			station.resetStation();
 

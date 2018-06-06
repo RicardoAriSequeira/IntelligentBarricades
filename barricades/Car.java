@@ -95,7 +95,7 @@ public abstract class Car {
 		}
 
 		if (map.inMap(nextPosition))
-			if (map.getCell(nextPosition).isRoad() && map.getCell(nextPosition).hasCar() == false)
+			if (map.getCell(nextPosition).isRoad && map.getCell(nextPosition).hasCar() == false)
 				return true;
 
 		return false;

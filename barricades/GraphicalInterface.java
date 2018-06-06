@@ -64,7 +64,7 @@ public class GraphicalInterface extends JFrame {
 
 				JPanel p = ((JPanel)cityPanel.getComponent(x*city.nY+y));
 
-				if (city.map.board[i][j].isRoad()){
+				if (city.map.board[i][j].isRoad) {
 
 					p.setBackground(Color.white);
 

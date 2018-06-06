@@ -15,7 +15,7 @@ public class Police extends Car {
 	public Police(Map map, PoliceStation station, Point position){
 		super(map, position);
 		this.station = station;
-    	this.Q = new double[map.nX * map.nY][actionsCount];
+    	this.Q = new double[map.nRoads * map.nRoads][actionsCount];
 	}
 
 	public void restartPolice(Point position) {
@@ -51,12 +51,12 @@ public class Police extends Car {
 		}
 	}
 
-	private double maxQ(Point s) {
-        List<Integer> actionsFromState = map.getCell(position).getLegalDirections();
+	private double maxQ(MapState s) {
+        List<Integer> actionsFromState = map.getCell(position).getPossibleDirections(map);
         double maxValue = Double.MIN_VALUE;
         for (int i = 0; i < actionsFromState.size(); i++) {
             int action = actionsFromState.get(i);
-            double value = Q[s.x+map.nY*s.y][action];
+            double value = Q[s.getStateIndex(map)][action];
             if (value > maxValue) maxValue = value;
         }
         return maxValue;
@@ -71,7 +71,7 @@ public class Police extends Car {
 			return STILL;
 		}
 
-		if (choice < 50) {
+		if (choice < 0) {
 
 			return directionDecision();
 
@@ -136,15 +136,21 @@ public class Police extends Car {
 
 	       	int action = trainDirectionDecision(legalDirections);
 
-	        Point nextState = map.getCell(position).getNextState(action);
+	       	Point thiefPosition = station.getThiefPosition();
 
-	        double q = Q[position.x+map.nY*position.y][action];
+	        //Point nextState = map.getCell(position).getNextState(action);
+	        MapState nextState = map.getNextState(position,thiefPosition, action);
+
+	        int indexPolice = map.getCell(position).indexRoad;
+			int indexThief = map.getCell(thiefPosition).indexRoad;
+
+	        double q = Q[indexPolice + (indexThief * map.nRoads)][action];
 	        double maxQ = maxQ(nextState);
 	        int r = station.getReward(position, action);
 
 	        List<Integer> actionsFromState = map.getCell(position).getPossibleDirections(map);
 	        double value = q + ( (float) 1 / (actionsFromState.size() + 1) ) * (r + gamma * maxQ - q);
-	        Q[position.x+map.nY*position.y][action] = value;
+	        Q[indexPolice + (indexThief * map.nRoads)][action] = value;
 
 			changePosition(action);
 
@@ -153,13 +159,18 @@ public class Police extends Car {
 
 	public int directionDecision() {
 
+		Point thiefPosition = station.getThiefPosition();
         List<Integer> actionsFromState = map.getCell(position).getPossibleDirections(map);
-        double maxValue = Double.MIN_VALUE;
-        int bestAction = STILL;
+        
+        int action, bestAction = STILL;
+        int indexPolice = map.getCell(position).indexRoad;
+		int indexThief = map.getCell(thiefPosition).indexRoad;
+
+		double value, maxValue = Double.MIN_VALUE;
 
         for (int i = 0; i < actionsFromState.size(); i++) {
-            int action = actionsFromState.get(i);
-            double value = Q[position.x + position.y*map.nY][action];
+            action = actionsFromState.get(i);
+            value = Q[indexPolice + (indexThief * map.nRoads)][action];
  
             if (value > maxValue) {
                 maxValue = value;

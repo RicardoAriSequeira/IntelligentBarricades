@@ -14,13 +14,16 @@ public class Map {
 	public static final int WEST = 3;
 	
 	public Cell[][] board;
-	public int nX, nY;
+	public int nX, nY, nRoads;
+	public MapState[][] states;
 
 	private List<Cell> entryCells;
+	private List<Cell> roadCells;
 
 	public Map(int nX, int nY){
 		this.nX = nX;
 		this.nY = nY;
+		this.nRoads = 0;
 		initialize();
 	}
 
@@ -55,10 +58,25 @@ public class Map {
 		Cell cell = getCell(p);
 
 		if (cell != null) {
-			return cell.isRoad();
+			return cell.isRoad;
 		}
 
 		return false;
+
+	}
+
+	public MapState getNextState(Point position, Point thiefPosition, int direction) {
+
+		Point nextPosition = new Point(position);
+		if (direction == NORTH) nextPosition.y--;
+		else if (direction == SOUTH) nextPosition.y++;
+		else if (direction == EAST) nextPosition.x++;
+		else if (direction == WEST) nextPosition.x--;
+
+		int indexPolice = getCell(nextPosition).indexRoad;
+		int indexThief = getCell(thiefPosition).indexRoad;
+
+		return states[indexPolice][indexThief];
 
 	}
 
@@ -66,6 +84,7 @@ public class Map {
 
 		board = new Cell[nX][nY];
 		entryCells = new ArrayList<Cell>();
+		roadCells = new ArrayList<Cell>();
 
 		for(int i=0; i<nX; i++)
 			for(int j=0; j<nY; j++)
@@ -124,7 +143,32 @@ public class Map {
 			}
 			if (j>22 && j<29)
 				setCellDirection(new Point(j,12), WEST);
+		}
 
+		this.nRoads = 0;
+
+		for(int i=0; i<nX; i++) {
+
+			for(int j=0; j<nY; j++) {
+
+				c = getCell(new Point(i,j));
+
+				if (c.isRoad) {
+					roadCells.add(c);
+					c.indexRoad = nRoads;
+					nRoads++;
+				}
+
+			}
+
+		}
+
+		states = new MapState[nRoads][nRoads];
+
+		for(int i=0; i<nRoads; i++) {
+			for(int j=0; j<nRoads; j++) {
+				states[i][j] = new MapState(roadCells.get(i).coordinates,roadCells.get(j).coordinates);
+			}
 		}
 
 	}
