@@ -6,11 +6,15 @@ import java.util.ArrayList;
 
 public class Cell {
 
-	public static final int NORTH = 0;
-	public static final int SOUTH = 1;
-	public static final int EAST = 2;
-	public static final int WEST = 3;
-	public static final int STILL = 4;
+	public static final int STILL = 0;
+	public static final int NORTH = 1;
+	public static final int SOUTH = 2;
+	public static final int EAST = 3;
+	public static final int WEST = 4;
+	public static final int NORTHEAST = 5;
+	public static final int NORTHWEST = 6;
+	public static final int SOUTHEAST = 7;
+	public static final int SOUTHWEST = 8;
 
 	public boolean isRoad, isBarricade, isGarage;
 	public boolean[] directions;
@@ -53,9 +57,9 @@ public class Cell {
 	public void setCar(Car car) {this.car = car;}
 
 	public void setDirection(int direction) {
-		if (directions[direction] == false) {
+		if (directions[direction-1] == false) {
 			isRoad = true;
-			directions[direction] = true;
+			directions[direction-1] = true;
 			legalDirections.add(direction);
 		}
 	}

@@ -153,14 +153,14 @@ public class Thief extends Car {
 		if (!possibleDirection(direction)) {
 
 			triedDirections = new boolean[4];
-			direction = generator.nextInt(4);
+			direction = generator.nextInt(4) + 1;
 
 			while (!possibleDirection(direction)) {
-				triedDirections[direction] = true;
+				triedDirections[direction-1] = true;
 				if (triedAllDirections()) {
 					break;
 				}
-				direction = generator.nextInt(4);
+				direction = generator.nextInt(4) + 1;
 			}
 
 			if (!possibleDirection(direction)) {

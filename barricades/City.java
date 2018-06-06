@@ -9,10 +9,15 @@ import java.util.Random;
 
 public class City {
 
-	public static final int NORTH = 0;
-	public static final int SOUTH = 1;
-	public static final int EAST = 2;
-	public static final int WEST = 3;
+	public static final int STILL = 0;
+	public static final int NORTH = 1;
+	public static final int SOUTH = 2;
+	public static final int EAST = 3;
+	public static final int WEST = 4;
+	public static final int NORTHEAST = 5;
+	public static final int NORTHWEST = 6;
+	public static final int SOUTHEAST = 7;
+	public static final int SOUTHWEST = 8;
 
 	public int nX, nY;
 	public GraphicalInterface GUI;
@@ -101,7 +106,7 @@ public class City {
 	    	while(running && !station.isThiefArrested()){
 
 	    		updateClock();
-	    		station.update();
+	    		station.update(thief);
 		    	removeCars();
 		    	thief.go();
 				//for(Civil c : civils) c.go();
@@ -160,9 +165,11 @@ public class City {
 
 	    			while(!station.isThiefArrested()) {
 
+	    				//System.out.println("thief at " + thief.position.x + "," + thief.position.y);
+
 	    				removeCars();
 
-			    		station.update();
+			    		station.update(thief);
 				    	thief.go();
 						//for(Civil c : civils) c.go();
 						for(Police p: polices)  {

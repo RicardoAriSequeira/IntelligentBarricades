@@ -4,7 +4,7 @@ import java.awt.Point;
 
 public class MapState {
 
-	private Point thiefPosition, policePosition;
+	public Point thiefPosition, policePosition;
 
 	public MapState(Point thiefPosition, Point policePosition){
 		this.thiefPosition = thiefPosition;

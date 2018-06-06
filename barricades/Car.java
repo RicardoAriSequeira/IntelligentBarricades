@@ -6,11 +6,15 @@ import java.util.List;
 
 public abstract class Car {
 
-	public static final int NORTH = 0;
-	public static final int SOUTH = 1;
-	public static final int EAST = 2;
-	public static final int WEST = 3;
-	public static final int STILL = 4;
+	public static final int STILL = 0;
+	public static final int NORTH = 1;
+	public static final int SOUTH = 2;
+	public static final int EAST = 3;
+	public static final int WEST = 4;
+	public static final int NORTHEAST = 5;
+	public static final int NORTHWEST = 6;
+	public static final int SOUTHEAST = 7;
+	public static final int SOUTHWEST = 8;
 
 	public static final int VISION_LIMIT = 4;
 

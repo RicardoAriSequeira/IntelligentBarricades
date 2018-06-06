@@ -10,12 +10,10 @@ public class Police extends Car {
     private final int actionsCount = 5;
 
 	private PoliceStation station;
-	public double[][] Q;
 
 	public Police(Map map, PoliceStation station, Point position){
 		super(map, position);
 		this.station = station;
-    	this.Q = new double[map.nRoads * map.nRoads][actionsCount];
 	}
 
 	public void restartPolice(Point position) {
@@ -53,10 +51,11 @@ public class Police extends Car {
 
 	private double maxQ(MapState s) {
         List<Integer> actionsFromState = map.getCell(position).getPossibleDirections(map);
+        int indexPolice = map.getCell(position).indexRoad;
         double maxValue = Double.MIN_VALUE;
         for (int i = 0; i < actionsFromState.size(); i++) {
             int action = actionsFromState.get(i);
-            double value = Q[s.getStateIndex(map)][action];
+            double value = station.Q[indexPolice + (station.getThiefOrientation(position)-1)][action];
             if (value > maxValue) maxValue = value;
         }
         return maxValue;
@@ -68,26 +67,26 @@ public class Police extends Car {
 		int choice = generator.nextInt(100);
 
 		if (station.nextToThief(position)) {
-			return STILL;
-		}
+		 	return STILL;
+		 }
 
-		if (choice < 0) {
+		if (choice < 30) {
 
-			return directionDecision();
+		 	return directionDecision();
 
-		} else {
+		 } else {
 
-			if (station.isThiefPositionKnown()) {
+		// 	if (station.isThiefPositionKnown()) {
 
 				triedDirections = new boolean[4];
-				int direction = generator.nextInt(4);
+				int direction = generator.nextInt(4) + 1;
 
 				while (!possibleDirection(direction)) {
-					triedDirections[direction] = true;
+					triedDirections[direction-1] = true;
 					if (triedAllDirections()) {
 						break;
 					}
-					direction = generator.nextInt(4);
+					direction = generator.nextInt(4) + 1;
 				}
 
 				if (!possibleDirection(direction)) {
@@ -96,29 +95,29 @@ public class Police extends Car {
 
 				return direction;
 
-			} else {
+		// 	} else {
 
-				triedDirections = new boolean[legalDirections.size()];
-				int r = generator.nextInt(legalDirections.size());
-				int direction = legalDirections.get(r);
+				// triedDirections = new boolean[legalDirections.size()];
+				// int r = generator.nextInt(legalDirections.size());
+				// int direction = legalDirections.get(r);
 
-				while (!possibleDirection(direction)) {
-					triedDirections[r] = true;
-					if (triedAllDirections()) {
-						break;
-					}
-					r = generator.nextInt(legalDirections.size());
-					direction = legalDirections.get(r);
-				}
+				// while (!possibleDirection(direction)) {
+				// 	triedDirections[r] = true;
+				// 	if (triedAllDirections()) {
+				// 		break;
+				// 	}
+				// 	r = generator.nextInt(legalDirections.size());
+				// 	direction = legalDirections.get(r);
+				// }
 				
-				if (!possibleDirection(direction)) {
-					return STILL;
-				}
+				// if (!possibleDirection(direction)) {
+				// 	return STILL;
+				// }
 
-				return direction;
+				// return direction;
 
-			}
-		}
+		 	}
+		// }
     }
 
     public void train() {
@@ -144,13 +143,13 @@ public class Police extends Car {
 	        int indexPolice = map.getCell(position).indexRoad;
 			int indexThief = map.getCell(thiefPosition).indexRoad;
 
-	        double q = Q[indexPolice + (indexThief * map.nRoads)][action];
+	        double q = station.Q[indexPolice + indexThief * map.nRoads][action];
 	        double maxQ = maxQ(nextState);
 	        int r = station.getReward(position, action);
 
 	        List<Integer> actionsFromState = map.getCell(position).getPossibleDirections(map);
 	        double value = q + ( (float) 1 / (actionsFromState.size() + 1) ) * (r + gamma * maxQ - q);
-	        Q[indexPolice + (indexThief * map.nRoads)][action] = value;
+	        station.Q[indexPolice + indexThief * map.nRoads][action] = value;
 
 			changePosition(action);
 
@@ -158,6 +157,8 @@ public class Police extends Car {
 	}
 
 	public int directionDecision() {
+
+		searchThiefAround();
 
 		Point thiefPosition = station.getThiefPosition();
         List<Integer> actionsFromState = map.getCell(position).getPossibleDirections(map);
@@ -170,13 +171,16 @@ public class Police extends Car {
 
         for (int i = 0; i < actionsFromState.size(); i++) {
             action = actionsFromState.get(i);
-            value = Q[indexPolice + (indexThief * map.nRoads)][action];
+            value = station.Q[indexPolice + indexThief * map.nRoads][action];
  
             if (value > maxValue) {
                 maxValue = value;
                 bestAction = action;
             }
         }
+
+        //for (int i = 0; i < 5; i++)
+       	//	System.out.println("Q[" + (indexPolice + (station.getThiefOrientation(position)-1)) + "][" + i + "]: " + station.Q[indexPolice + (station.getThiefOrientation(position)-1)][i]);
 
         return bestAction;
 	}
