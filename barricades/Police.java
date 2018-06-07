@@ -50,12 +50,14 @@ public class Police extends Car {
 	}
 
 	private double maxQ(MapState s) {
+		Point thiefPosition = station.getThiefPosition();
         List<Integer> actionsFromState = map.getCell(position).getPossibleDirections(map);
         int indexPolice = map.getCell(position).indexRoad;
+        int indexThief = map.getCell(thiefPosition).indexRoad;
         double maxValue = Double.MIN_VALUE;
         for (int i = 0; i < actionsFromState.size(); i++) {
             int action = actionsFromState.get(i);
-            double value = station.Q[indexPolice + (station.getThiefOrientation(position)-1)][action];
+            double value = station.Q[indexPolice + indexThief * map.nRoads][action];
             if (value > maxValue) maxValue = value;
         }
         return maxValue;
