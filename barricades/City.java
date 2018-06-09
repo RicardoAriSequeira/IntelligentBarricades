@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.io.*;
 
 public class City {
 
@@ -14,75 +15,88 @@ public class City {
 	public static final int SOUTH = 2;
 	public static final int EAST = 3;
 	public static final int WEST = 4;
-	public static final int NORTHEAST = 5;
-	public static final int NORTHWEST = 6;
-	public static final int SOUTHEAST = 7;
-	public static final int SOUTHWEST = 8;
 
-	public int nX, nY;
-	public GraphicalInterface GUI;
+	public Map map;
+	public Thief thief;
 	public List<Civil> civils;
 	public List<Police> polices;
-	public Thief thief;
-	public Map map;
 	public PoliceStation station;
+	public GraphicalInterface GUI;
+
+	public int nX, nY, nPolices, nCivils;
+
+	public Point[] randomCivilPoints = {new Point(22,6),new Point(23,9),new Point(16,8),new Point(31,10),
+													new Point(29,4),new Point(1,29),new Point(9,27),new Point(11,21),
+													new Point(17,25),new Point(14,29),new Point(23,23),new Point(29,25),
+													new Point(2,9),new Point(8,5),new Point(9,11),new Point(5,16),
+													new Point(20,16),new Point(8,17),new Point(17,17)};
 	
 	public City(int nX, int nY) {
+
 		this.nX = nX;
 		this.nY = nY;
-		initialize();
-	}
-
-	private void initialize() {
+		this.nPolices = 4;
+		this.nCivils = 0;
 
 		this.map = new Map(this.nX, this.nY);
 		this.civils = new ArrayList<Civil>();
 		this.polices = new ArrayList<Police>();
 
-		insertThief(new Point(20,16));
+		insertThief(map.getRandomRoadCell());
 
 		this.station = new PoliceStation(map, thief);
 
-		insertPolice(new Point(8,16));
-		insertPolice(new Point(21,16));
-		insertPolice(new Point(8,8));
-		insertPolice(new Point(23,22));
+		for (int i = 0; i < nPolices; i++)
+			insertPolice(map.getRandomRoadCell());
 
-		/*
-		insertCivil(new Point(22,6)));
-		insertCivil(new Point(23,9)));
-		insertCivil(new Point(16,8)));
-		insertCivil(new Point(31,10)));
-		insertCivil(new Point(28,4)));
-		insertCivil(new Point(1,29)));
-		insertCivil(new Point(9,27)));
-		insertCivil(new Point(11,21)));
-		insertCivil(new Point(17,25)));
-		insertCivil(new Point(14,29)));
-		insertCivil(new Point(23,23)));
-		insertCivil(new Point(29,25)));
-		insertCivil(new Point(3,9)));
-		insertCivil(new Point(8,5)));
-		insertCivil(new Point(9,11)));
-		insertCivil(new Point(5,16)));
-		insertCivil(new Point(20,16)));
-		insertCivil(new Point(8,17)));
-		insertCivil(new Point(17,17)));
-		*/
+		for (int i = 0; i < nCivils; i++)
+			insertCivil(map.getRandomRoadCell());
+
 	}
 
-	
-	/** B: Elicit agent actions */
+	private void initialize(boolean train) {
+
+		this.map = new Map(this.nX, this.nY);
+		this.civils = new ArrayList<Civil>();
+		this.polices = new ArrayList<Police>();
+
+		if (train) {
+
+			insertThief(map.getRandomRoadCell());
+
+			for (int i = 0; i < nPolices; i++)
+				insertPolice(map.getRandomRoadCell());
+
+			for (int i = 0; i < nCivils; i++)
+				insertCivil(map.getRandomRoadCell());
+
+		} else {
+
+			insertThief(new Point(10,16));
+
+			for (int i = 0; i < nPolices; i++)
+				insertPolice(new Point(28-i,16));
+
+			for (int i = 0; i < nCivils; i++)
+				insertCivil(randomCivilPoints[i]);
+
+		}
+
+		station.resetStation(map, thief);
+
+	}
 	
 	RunThread runThread;
 
 	public class RunThread extends Thread {
 		
 		int time;
+		boolean display;
 		private volatile boolean running = true;
 		
-		public RunThread(int time){
+		public RunThread(int time, boolean display){
 			this.time = time;
+			this.display = display;
 		}
 
 		public void terminate(){
@@ -91,35 +105,68 @@ public class City {
 		
 	    public void run() {
 
-	    	removeCars();
+	    	//try {
 
-	    	map.initialize();
-	    	polices.get(0).restartPolice(new Point(8,16));
-			polices.get(1).restartPolice(new Point(21,16));
-			polices.get(2).restartPolice(new Point(8,8));
-			polices.get(3).restartPolice(new Point(23,22));
-			insertThief(new Point(20,16));
-			station.resetStation();
+		    	//PrintWriter writer = new PrintWriter("results.txt", "UTF-8");
 
-			displayCars();
+		    	long startTime;
+		    	//int nFailed = 0;
 
-	    	while(running && !station.isThiefArrested()){
+				//for (int i = 0; i < 1000 && running; i++) {
 
-	    		updateClock();
-	    		station.update(thief);
-		    	removeCars();
-		    	thief.go();
-				//for(Civil c : civils) c.go();
-				for(Police p: polices) p.go();
-				substituteCars();
-				displayCars();
-				try {
-					sleep(time*10);
-				} catch (InterruptedException e) {
-					this.interrupt();
-				}
+					if (display) removeCars();
 
-	    	}
+			    	initialize(false);
+
+					if (display) displayCars();
+
+					startTime = System.nanoTime();
+
+			    	while(running && !station.isThiefArrested()){
+
+			    		updateClock();
+			    		station.update(thief);
+				    	if (display) removeCars();
+				    	for(Civil c : civils) c.go();
+				    	thief.go();
+						for(Police p: polices) p.go();
+						substituteCars();
+
+						if (display) {
+							displayCars();
+							try {
+								sleep(time*10);
+							} catch (InterruptedException e) {
+								this.interrupt();
+							}
+						}
+
+						// if (((System.nanoTime() - startTime) / 1000) > 100000) {
+						// 	i--;
+						// 	nFailed++;
+						// 	break;
+						// }
+			    	}
+
+			  //   	if (((System.nanoTime() - startTime) / 1000) > 100000) {
+			  //   		System.out.println("Failed");
+					// } else {
+					// 	writer.println(((System.nanoTime() - startTime) / 1000));
+			    		System.out.println("Run Time: " + ((System.nanoTime() - startTime) / 1000) + " microseconds");
+					//}
+
+			    //}
+
+			    // writer.println("Failed " + nFailed + " times");
+			    // writer.close();
+		    	GUI.setRunText("Run");
+				terminate();
+
+			// } catch (FileNotFoundException e) {
+			// 	System.err.println("Caught FileNotFoundException: " +  e.getMessage());
+			// } catch (UnsupportedEncodingException e) {
+			// 	System.err.println("Caught UnsupportedEncodingException: " +  e.getMessage());
+			// }
 	    }
 	}
 
@@ -150,38 +197,27 @@ public class City {
 
 	    		for (int i = 0; i < iterations && running; i++) {
 
+	    			initialize(true);
+
 	    			startIteration = System.nanoTime();
 
 	    			System.out.print("Iteration number " + i + ": ");
 	    			GUI.setTrainText((i + 1) + " of " + iterations);
 
-	    			map.initialize();
-	    			polices.get(0).restartPolice(new Point(8,16));
-					polices.get(1).restartPolice(new Point(21,16));
-					polices.get(2).restartPolice(new Point(8,8));
-					polices.get(3).restartPolice(new Point(23,22));
-	    			insertThief(new Point(20,16));
-	    			station.resetStation();
-
 	    			while(!station.isThiefArrested()) {
-
-	    				//System.out.println("thief at " + thief.position.x + "," + thief.position.y);
 
 	    				removeCars();
 
 			    		station.update(thief);
+			    		for(Civil c : civils) c.go();
 				    	thief.go();
-						//for(Civil c : civils) c.go();
-						for(Police p: polices)  {
-							p.train();
-						}
+						for(Police p: polices) p.train();
 						substituteCars();
 
 						if (display) {
 							displayCars();
-							
 							try {
-								sleep(10);
+								sleep(50);
 							} catch (InterruptedException e) {
 								this.interrupt();
 							}
@@ -226,7 +262,7 @@ public class City {
 		}
 
 		List<Cell> entryCells = map.getEntryCells();
-		Random generator = new Random(482398427);
+		Random generator = new Random();
 		Cell randomEntryCell;
 
 		for (int p = 0; p < deletedPolices; p++) {
@@ -260,20 +296,18 @@ public class City {
 		this.station.updatePolices(polices);
 	}
 
-	public void run(int time) {
-		runThread = new RunThread(time);
+	public void run(int time, boolean display) {
+		runThread = new RunThread(time, display);
 		runThread.start();
-		//displayCars();
 	}
 
 	public void train(int iterations, boolean display) {
 		trainThread = new TrainThread(iterations, display);
 		trainThread.start();
-		//displayCars();
 	}
 
 	public void reset() {
-		initialize();
+		initialize(false);
 		displayCity();
 		displayCars();	
 	}

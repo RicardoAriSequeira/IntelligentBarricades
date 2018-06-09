@@ -13,30 +13,7 @@ public class Thief extends Car {
 		surrender = false;
 	}
 
-
 	public boolean surrender() {return surrender;}
-
-	private Point garageAround() {
-
-		Cell cell;
-		Point[] visionPoints = getVisionPoints();
-
-		for (Point point : visionPoints) {
-
-			cell = map.getCell(point);
-
-			if (cell != null) {
-
-				if (cell.isGarage()) {
-
-					return point;
-				}
-			}
-
-		}
-
-		return null;
-	}
 
 	private boolean policeAround() {
 
@@ -134,7 +111,7 @@ public class Thief extends Car {
 
 	public int directionDecision() {
 
-		Random generator = new Random(482398427);
+		Random generator = new Random();
 		List<Integer> legalDirections = map.getCell(position).getLegalDirections();
 
 		triedDirections = new boolean[legalDirections.size()];
@@ -143,9 +120,7 @@ public class Thief extends Car {
 
 		while (!possibleDirection(direction)) {
 			triedDirections[r] = true;
-			if (triedAllDirections()) {
-				break;
-			}
+			if (triedAllDirections()) break;
 			r = generator.nextInt(legalDirections.size());
 			direction = legalDirections.get(r);
 		}
@@ -157,9 +132,7 @@ public class Thief extends Car {
 
 			while (!possibleDirection(direction)) {
 				triedDirections[direction-1] = true;
-				if (triedAllDirections()) {
-					break;
-				}
+				if (triedAllDirections()) break;
 				direction = generator.nextInt(4) + 1;
 			}
 

@@ -37,6 +37,16 @@ public class Map {
 		return null;
 	}
 
+	public Point getRandomRoadCell() {
+		Random generator = new Random();
+		int r = generator.nextInt(roadCells.size());
+		while (roadCells.get(r).hasCar()) {
+			r = generator.nextInt(roadCells.size());
+		}
+		return roadCells.get(r).coordinates;
+
+	}
+
 	public void setCellDirection(Point p, int direction) {
 
 		Cell c = getCell(p);
@@ -96,7 +106,7 @@ public class Map {
 				board[i][j] = new Cell(i,j);
 
 		Cell c = getCell(new Point(16, 2));
-		//c.setIsGarage();
+		
 		for(int i=0; i<nX; i++) {
 
 			setCellDirection(new Point(8,i), SOUTH);
@@ -111,7 +121,7 @@ public class Map {
 			}
 			if ((i<21) || (i>25 && i<30))
 				setCellDirection(new Point(18,i), NORTH);
-			if (i>15 && i<32)
+			if (i>16 && i<32)
 				setCellDirection(new Point(29,i), NORTH);
 			if (i>16 && i<32)
 				setCellDirection(new Point(5,i), SOUTH);
@@ -136,7 +146,7 @@ public class Map {
 			setCellDirection(new Point(j,25), WEST);
 			setCellDirection(new Point(j,29), EAST);
 
-			if ((j<3) || (j>8 && j<14) || (j>18 && j<24) || (j>28 && j<32))
+			if ((j<3) || (j>8 && j<14) || (j>18 && j<24) || (j>29 && j<32))
 				setCellDirection(new Point(j,10), WEST);
 			if (j>2 && j<9)
 				setCellDirection(new Point(j,7), WEST);

@@ -11,7 +11,7 @@ public class Civil extends Car {
 	}
 
 	public int directionDecision() {
-		Random generator = new Random(482398427);
+		Random generator = new Random();
 		List<Integer> possibleDirections = map.getCell(position).getLegalDirections();
 		int r = generator.nextInt(possibleDirections.size());
 		return possibleDirections.get(r);

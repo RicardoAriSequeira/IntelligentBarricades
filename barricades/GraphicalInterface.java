@@ -148,6 +148,10 @@ public class GraphicalInterface extends JFrame {
 		train.setText(s);
 	}
 
+	public void setRunText(String s) {
+		run.setText(s);
+	}
+
 	private Component createButtonPanel(City city) {
 
 		JPanel panel = new JPanel();
@@ -189,7 +193,7 @@ public class GraphicalInterface extends JFrame {
 					}
 					if(time>0){
 						startTime = System.currentTimeMillis();
-						city.run(time);
+						city.run(time,display.isSelected());
 	 					run.setText("Stop");						
 					}
  				} else {
@@ -224,13 +228,6 @@ public class GraphicalInterface extends JFrame {
 		speed = new JTextField("20");
 		speed.setMargin(new Insets(5,5,5,5));
 		panel.add(speed);
-
-		/*
-		panel.add(new JLabel("Run Total Time:"));
-		time = new JLabel(0 + "s");
-		panel.add(time);
-
-		*/
 		
 		return panel;
 	}
